@@ -61,6 +61,23 @@
      <height>22</height>
     </rect>
    </property>
+   <property name="minimumDateTime">
+    <datetime>
+     <hour>0</hour>
+     <minute>0</minute>
+     <second>0</second>
+     <year>2010</year>
+     <month>1</month>
+     <day>1</day>
+    </datetime>
+   </property>
+   <property name="minimumDate">
+    <date>
+     <year>2010</year>
+     <month>1</month>
+     <day>1</day>
+    </date>
+   </property>
   </widget>
   <widget class="QLineEdit" name="MovieTitleEntry">
    <property name="geometry">
@@ -84,6 +101,56 @@
    <property name="maxCount">
     <number>11</number>
    </property>
+   <item>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>4</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>5</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>6</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>7</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>8</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>9</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>10</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="MovieRatingLabel">
    <property name="geometry">
@@ -120,6 +187,86 @@
      <height>22</height>
     </rect>
    </property>
+   <item>
+    <property name="text">
+     <string>Drama</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Romance</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Documentary</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Animated</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Fantasy</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Horror</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Comedy</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Thriller</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Crime</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Western</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Adventure</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Action</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>War</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Biography</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Sci-Fi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Musical</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="MovieLocationLabel">
    <property name="geometry">
@@ -137,7 +284,7 @@
   <widget class="QRadioButton" name="MovieLocationTheaterEntry">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>200</x>
      <y>140</y>
      <width>82</width>
      <height>21</height>
@@ -150,7 +297,7 @@
   <widget class="QRadioButton" name="MovieLocationHomeEntry">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>130</x>
      <y>140</y>
      <width>82</width>
      <height>21</height>
