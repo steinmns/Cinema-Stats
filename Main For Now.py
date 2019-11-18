@@ -15,7 +15,6 @@ mydb = mysql.connector.connect(
 class Diag_Win(QDialog):
     def __init__(self, *args, **kwargs):
         super(Diag_Win, self).__init__(*args, **kwargs)
-        self.ui = uic.loadUi('AddMovieForm.ui', self)   #Loads Add Movie Form Window
 
 class Main_Win(QMainWindow):
     
@@ -31,16 +30,24 @@ class Main_Win(QMainWindow):
 
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
-        print('ADD BUTTON TEST')
-        form1 = Diag_Win(self)
-        if form1.exec_():
+        #print('ADD BUTTON TEST')
+        addForm = Diag_Win(self)
+        addForm.ui = uic.loadUi('AddMovieForm.ui', addForm)   #Loads Add Movie Form Window
+        if addForm.exec_():
             print("Success!")
         else:
             print("Closing Add Form")
+            #Possibly have values from form grabbed here
 
     def displaySettingsMenu(self):
         # Displays the Settings Menu when the SettingsButton is pressed
-        print('SETTINGS BUTTON TEST')
+        #print('SETTINGS BUTTON TEST')
+        settingsMenu = Diag_Win(self)
+        settingsMenu.ui = uic.loadUi('SettingsMenu.ui', settingsMenu)   #Loads Settings Menu
+        if settingsMenu.exec_():
+            print("Success!")
+        else:
+            print("Closing Settings Menu")
 
     def insertMovie(self):
         #Inserts a new movie to the movie list
@@ -48,6 +55,14 @@ class Main_Win(QMainWindow):
         #vals = [self.] FIX THIS AND ADD CONTENTS OF ADD FORM
         mydb.cursor().execute(sql, vals)
         mydb.commit()
+    
+    def refreshLastTenTable(self):
+        #Refreshes table with last ten movies watched
+        header = ["ID", "Title", "Date", "Rating", "Genre", "Location", "Comments"]
+        self.LastTenTable.setColumnCount(7)
+        self.LastTenTable.setHorizontalHeaderLabels(header)
+        #self.LastTenTable.insertRow(2)
+
 
 
 
@@ -56,6 +71,8 @@ def startup():
     app = QApplication(sys.argv)    #System configs
     main_window = Main_Win()
     main_window.show()  #Displays the window
+    main_window.refreshLastTenTable()
     sys.exit(app.exec_()) #Ensures clean exit when user closes window
+    
 
 startup() 

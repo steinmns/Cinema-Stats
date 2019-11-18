@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Cinema Stats V1.0</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="MainTabMenu">
@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="HomeTab">
      <attribute name="title">
@@ -49,7 +49,7 @@
        <string>Last 10 Films</string>
       </property>
      </widget>
-     <widget class="QTableView" name="LastTenTable">
+     <widget class="QTableWidget" name="LastTenTable">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -57,6 +57,15 @@
         <width>831</width>
         <height>561</height>
        </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="columnCount">
+       <number>0</number>
       </property>
      </widget>
     </widget>
