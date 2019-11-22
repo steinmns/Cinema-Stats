@@ -5,7 +5,7 @@ import sys
 import mysql.connector
 
 #Database Credentials
-mydb = mysql.connector.connect(
+dbConnection = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="1234",
@@ -53,15 +53,29 @@ class Main_Win(QMainWindow):
         #Inserts a new movie to the movie list
         sql = "INSERT INTO log (LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS) VALUES (%s, %s, %s, %s, %s, %s)"
         #vals = [self.] FIX THIS AND ADD CONTENTS OF ADD FORM
-        mydb.cursor().execute(sql, vals)
-        mydb.commit()
+        #mydb.cursor().execute(sql, vals)
+        #mydb.commit()
     
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
+        #Should be called every time the insertMovie() is successfully called
+        sql = "SELECT * FROM log LIMIT 0, 10"    #Selects top 10 values from log table
+        cursor = dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+        print(myresult)
+        #print(cursor.rowcount)
         header = ["ID", "Title", "Date", "Rating", "Genre", "Location", "Comments"]
-        self.LastTenTable.setColumnCount(7)
-        self.LastTenTable.setHorizontalHeaderLabels(header)
-        #self.LastTenTable.insertRow(2)
+        self.LastTenTable.setColumnCount(7) #Sets column count to 7
+        self.LastTenTable.setHorizontalHeaderLabels(header) #Sets Column headings
+        for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
+            self.LastTenTable.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.LastTenTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
+
+    #def interpretRowData(self):
+        #Takes data from db and prepares it for display -> needs to handle Genre and Location
 
 
 
