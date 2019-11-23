@@ -1,7 +1,7 @@
-#Imports
 from PyQt5 import QtWidgets, QtCore, uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
-import sys
+from Classes.AddWindowClass import AddForm_Win
+from Classes.SettingsWindowClass import Settings_Win
 import mysql.connector
 
 #Database Credentials
@@ -12,16 +12,12 @@ dbConnection = mysql.connector.connect(
     database="moviesheet"
 )
 
-class Diag_Win(QDialog):
-    def __init__(self, *args, **kwargs):
-        super(Diag_Win, self).__init__(*args, **kwargs)
-
 class Main_Win(QMainWindow):
     
     def __init__(self):
         #Constructor Method
         super(Main_Win, self).__init__()
-        self.ui = uic.loadUi('MainWindowV1.ui', self)   #Loads Main Menu Window
+        self.ui = uic.loadUi('UI Files/MainWindowV1.ui', self)   #Loads Main Menu Window
 
         self.button = self.findChild(QtWidgets.QPushButton, 'AddMediaButton') 
         self.button.clicked.connect(self.displayAddMovieForm) 
@@ -31,8 +27,7 @@ class Main_Win(QMainWindow):
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
         #print('ADD BUTTON TEST')
-        addForm = Diag_Win(self)
-        addForm.ui = uic.loadUi('AddMovieForm.ui', addForm)   #Loads Add Movie Form Window
+        addForm = AddForm_Win(self)
         if addForm.exec_():
             print("Success!")
         else:
@@ -42,8 +37,7 @@ class Main_Win(QMainWindow):
     def displaySettingsMenu(self):
         # Displays the Settings Menu when the SettingsButton is pressed
         #print('SETTINGS BUTTON TEST')
-        settingsMenu = Diag_Win(self)
-        settingsMenu.ui = uic.loadUi('SettingsMenu.ui', settingsMenu)   #Loads Settings Menu
+        settingsMenu = Settings_Win(self)   #FIX THIS WITH A NEW SETTINGS CLASS
         if settingsMenu.exec_():
             print("Success!")
         else:
@@ -57,7 +51,7 @@ class Main_Win(QMainWindow):
         #mydb.commit()
 
     def validateInsertVals(self, vals):
-        if(self.)
+        #if(self.)
         print("This Will validate the form eventually")
     
     def refreshLastTenTable(self):
@@ -92,15 +86,3 @@ class Main_Win(QMainWindow):
             self.MainLogTable.insertRow(row_number)
             for column_number, data in enumerate(row_data):
                 self.MainLogTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
-
-
-
-def startup():
-    app = QApplication(sys.argv)    #System configs
-    main_window = Main_Win()
-    main_window.show()  #Displays the window
-    main_window.refreshLastTenTable()
-    sys.exit(app.exec_()) #Ensures clean exit when user closes window
-    
-
-startup() 
