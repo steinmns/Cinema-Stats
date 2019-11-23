@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, QtCore, uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from Classes.AddWindowClass import AddForm_Win
 from Classes.SettingsWindowClass import Settings_Win
+import qtawesome as qta #Possibly make this only material icons at some point
 import mysql.connector
 
 #Database Credentials
@@ -19,10 +20,15 @@ class Main_Win(QMainWindow):
         super(Main_Win, self).__init__()
         self.ui = uic.loadUi('UI Files/MainWindowV1.ui', self)   #Loads Main Menu Window
 
-        self.button = self.findChild(QtWidgets.QPushButton, 'AddMediaButton') 
-        self.button.clicked.connect(self.displayAddMovieForm) 
-        self.button = self.findChild(QtWidgets.QPushButton, 'SettingsButton') 
-        self.button.clicked.connect(self.displaySettingsMenu)
+        plus_icon = qta.icon('mdi.plus')
+        self.Addbutton = self.findChild(QtWidgets.QPushButton, 'AddMediaButton') 
+        self.Addbutton.setIcon(plus_icon)
+        self.Addbutton.clicked.connect(self.displayAddMovieForm) 
+        
+        settings_icon = qta.icon('mdi.settings-outline')
+        self.Settingsbutton = self.findChild(QtWidgets.QPushButton, 'SettingsButton') 
+        self.Settingsbutton.setIcon(settings_icon)
+        self.Settingsbutton.clicked.connect(self.displaySettingsMenu)
 
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
