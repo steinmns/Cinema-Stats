@@ -2,13 +2,14 @@
 Python based application to log and monitor viewing history
 
 # Repository Format
-
+- The repository is comprised of a main python file and three UI files for each of the screens in the interface. This will likely become more modular in the future, but it is not a current priority.
 
 # Operation
-
+- A full operation manual will be written once the interface is complete. The manual will also be available within the application.
 
 # Development
-
+- Currently working on the "Add New Movie" functionality
+- Last completed: Tables now display data from the database
 
 # Future Improvements/Ideas (Subject to change)
 - Separate tabs for TV and Music
