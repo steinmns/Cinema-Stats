@@ -37,24 +37,18 @@ class Main_Win(QMainWindow):
         if addForm.exec_():
             print("Success!")
         else:
+            #self.refreshLastTenTable()
             print("Closing Add Form")
             #Possibly have values from form grabbed here
 
     def displaySettingsMenu(self):
         # Displays the Settings Menu when the SettingsButton is pressed
         #print('SETTINGS BUTTON TEST')
-        settingsMenu = Settings_Win(self)   #FIX THIS WITH A NEW SETTINGS CLASS
+        settingsMenu = Settings_Win(self)
         if settingsMenu.exec_():
             print("Success!")
         else:
             print("Closing Settings Menu")
-
-    def insertMovie(self):
-        #Inserts a new movie to the movie list
-        sql = "INSERT INTO log (LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS) VALUES (%s, %s, %s, %s, %s, %s)"
-        #vals = [self.] FIX THIS AND ADD CONTENTS OF ADD FORM
-        #mydb.cursor().execute(sql, vals)
-        #mydb.commit()
 
     def validateInsertVals(self, vals):
         #if(self.)
@@ -70,6 +64,7 @@ class Main_Win(QMainWindow):
         cursor.close()
         #print(myresult)
         #print(cursor.rowcount)
+        #self.LastTenTable.setRowCount(0)
         header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
         self.LastTenTable.setColumnCount(6) #Sets column count to 6
         self.LastTenTable.setHorizontalHeaderLabels(header) #Sets Column headings
