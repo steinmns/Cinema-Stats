@@ -20,6 +20,13 @@ class Main_Win(QMainWindow):
         super(Main_Win, self).__init__()
         self.ui = uic.loadUi('UI Files/MainWindowV1.ui', self)   #Loads Main Menu Window
 
+        hometab_icon = qta.icon('mdi.home-outline')
+        logtab_icon = qta.icon('mdi.file-document-box-outline') #mdi.folder-text-outline
+        insighttab_icon = qta.icon('mdi.chart-line')
+        self.MainTabMenu.setTabIcon(0, hometab_icon)
+        self.MainTabMenu.setTabIcon(1, logtab_icon)
+        self.MainTabMenu.setTabIcon(2, insighttab_icon)
+
         plus_icon = qta.icon('mdi.plus')
         self.Addbutton = self.findChild(QtWidgets.QPushButton, 'AddMediaButton') 
         self.Addbutton.setIcon(plus_icon)
