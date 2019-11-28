@@ -14,6 +14,7 @@ class AddForm_Win(QDialog):
     def __init__(self, *args, **kwargs):
         super(AddForm_Win, self).__init__(*args, **kwargs)
         self.ui = uic.loadUi('UI Files/AddMovieForm.ui', self)   #Loads Add Movie Form Window
+        self.DateWatchedEntry.setDate(QtCore.QDate.currentDate())
 
         #Definitions for add form entry fields
         self.submitButton = self.findChild(QtWidgets.QPushButton, 'SubmitButton')

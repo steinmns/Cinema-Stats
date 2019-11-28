@@ -55,7 +55,7 @@
         <x>50</x>
         <y>60</y>
         <width>831</width>
-        <height>401</height>
+        <height>331</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -63,6 +63,12 @@
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
       </property>
       <property name="columnCount">
        <number>0</number>
@@ -73,16 +79,6 @@
      <attribute name="title">
       <string>Log View</string>
      </attribute>
-     <widget class="QTableView" name="MainLogTable">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>60</y>
-        <width>831</width>
-        <height>561</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QLabel" name="LoggedFilmsLabel">
       <property name="geometry">
        <rect>
@@ -102,58 +98,20 @@
        <string>Logged Films</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="SortByDropdown">
+     <widget class="QTableWidget" name="MainLogTable">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>30</y>
-        <width>171</width>
-        <height>22</height>
+        <x>50</x>
+        <y>60</y>
+        <width>831</width>
+        <height>561</height>
        </rect>
       </property>
-      <item>
-       <property name="text">
-        <string>Date Logged</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Movie Title (Ascending)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Movie Title (Descending)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Rating</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Genre</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="SortByLabel">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>101</width>
-        <height>41</height>
-       </rect>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
       </property>
-      <property name="font">
-       <font>
-        <family>Consolas</family>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Sort By:</string>
+      <property name="sortingEnabled">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

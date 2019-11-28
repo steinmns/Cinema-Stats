@@ -57,7 +57,7 @@ class Main_Win(QMainWindow):
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
         #Should be called every time the insertMovie() is successfully called if the current tab is "Home"
-        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log LIMIT 0, 10" #Selects top 10 results from the table
+        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
         cursor = dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
@@ -75,13 +75,13 @@ class Main_Win(QMainWindow):
 
     def refreshMainLogTable(self):
         #Refreshes table with last ten movies watched
-        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log"    #Selects all entries 
+        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
         cursor = dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
         header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
-        self.MainLogTable.setColumnCount(7) #Sets column count to 6
+        self.MainLogTable.setColumnCount(6) #Sets column count to 6
         self.MainLogTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
             self.MainLogTable.insertRow(row_number)

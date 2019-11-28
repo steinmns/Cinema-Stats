@@ -9,6 +9,7 @@ def startup():
     main_window = Main_Win()
     main_window.show()  #Displays the window
     main_window.refreshLastTenTable()
+    main_window.refreshMainLogTable()
     sys.exit(app.exec_()) #Ensures clean exit when user closes window
     
 startup() 
