@@ -11,6 +11,11 @@ Python based application to log and monitor viewing history
 - Currently working on the "Add New Movie" functionality
 - Last completed: Tables now display data from the database
 
+# Dependencies
+- PyQt5
+- Matplotlib
+- QtAwesome
+
 # Future Improvements/Ideas (Subject to change)
 - Separate tabs for TV and Music
 - Have a page for media coming out soon
