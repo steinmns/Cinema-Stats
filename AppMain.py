@@ -10,6 +10,7 @@ def startup():
     main_window.show()  #Displays the window
     main_window.refreshLastTenTable()
     main_window.refreshMainLogTable()
+    main_window.generateGenrePie()
     sys.exit(app.exec_()) #Ensures clean exit when user closes window
     
 startup() 
