@@ -31,7 +31,6 @@ dbConnection = mysql.connector.connect(
 #TODO: Add automatic table refreshing
 #TODO: Add another theme
 #TODO: Add more graphs
-#TODO: Add graph styling
 
 class Main_Win(QMainWindow):
     
@@ -122,8 +121,11 @@ class Main_Win(QMainWindow):
             for column_number, data in enumerate(row_data):
                 self.MainLogTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
 
-    #def generateMoviesVersusTime(self):
-        
+    def zero_to_nan(self, sample):
+        for item in enumerate(sample):
+            if(item[1] == 0.0):
+                item[1] = np.nan
+        return sample
 
     def generateGenrePie(self):
         sql = "SELECT LOG_MOVIE_GENRE FROM log"
@@ -161,14 +163,23 @@ class Main_Win(QMainWindow):
             elif row_data[1][0] == 'War':
                 counts[12] += 1
             elif row_data[1][0] == 'Biography':
-                counts[13][0] += 1
+                counts[13] += 1
             elif row_data[1][0] == 'Sci-Fi':
                 counts[14] += 1
             elif row_data[1][0] == 'Musical':
                 counts[15] += 1
             else:
                 print('Bad genre data: ' + str(row_data[1]))
+
+        length = len(counts)
+        for i in range(length):
+            if(counts[i] == 0):
+                genreLabels[i] = ""
+
+        counts.remove(0)
+        genreLabels.remove("")
+
         fig1, ax1 = plt.subplots()
-        ax1.pie(counts, explode=None, labels=genreLabels, autopct='%1.1f%%', shadow=True, startangle=90)
+        ax1.pie(counts, explode=None, labels=genreLabels, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '', shadow=True, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         plt.show()
