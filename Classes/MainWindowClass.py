@@ -16,6 +16,7 @@ import mysql.connector
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+matplotlib.style.use('ggplot')
 
 #Database Credentials
 dbConnection = mysql.connector.connect(
