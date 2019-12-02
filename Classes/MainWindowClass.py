@@ -63,6 +63,16 @@ class Main_Win(QMainWindow):
         self.Settingsbutton.setIcon(settings_icon)
         self.Settingsbutton.clicked.connect(self.displaySettingsMenu)
 
+        #Delete Button Setup
+        delete_icon = qta.icon("mdi.trash-can-outline")
+        self.DeleteButton = self.findChild(QtWidgets.QPushButton, 'DeleteButton')
+        self.DeleteButton.setIcon(delete_icon)
+
+        #Edit Button Setup
+        edit_icon = qta.icon('mdi.table-edit')
+        self.EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
+        self.EditButton.setIcon(edit_icon)
+
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
         addForm = AddForm_Win(self)
@@ -79,10 +89,6 @@ class Main_Win(QMainWindow):
             print("Success!")
         else:
             print("Closing Settings Menu")
-
-    def validateInsertVals(self, vals):
-        #if(self.)
-        print("This Will validate the form eventually")
     
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
@@ -121,13 +127,18 @@ class Main_Win(QMainWindow):
             for column_number, data in enumerate(row_data):
                 self.MainLogTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
 
-    def zero_to_nan(self, sample):
-        for item in enumerate(sample):
-            if(item[1] == 0.0):
-                item[1] = np.nan
-        return sample
+    def deleteEntry(self):
+        #Deletes a selected entry from the table
+        model = self.model
+        indices = self.tableView.selectionModel().selectedRows() 
+        sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
+        vals = ['Alien', ]
+        cursor = dbConnection.cursor()
+        for index in sorted(indices):
+            model.removeRow(index.row()) 
 
     def generateGenrePie(self):
+        #Creates a pie chart of most watched genres
         sql = "SELECT LOG_MOVIE_GENRE FROM log"
         cursor = dbConnection.cursor()
         cursor.execute(sql)
@@ -171,6 +182,7 @@ class Main_Win(QMainWindow):
             else:
                 print('Bad genre data: ' + str(row_data[1]))
 
+        #Don't judge me for this -> this should remove the entries that have a count of zero so that they don't clutter the pie chart
         length = len(counts)
         for i in range(length):
             if(counts[i] == 0):
@@ -182,4 +194,42 @@ class Main_Win(QMainWindow):
         fig1, ax1 = plt.subplots()
         ax1.pie(counts, explode=None, labels=genreLabels, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '', shadow=True, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.show()
+        #self.figure = matplotlib.figure.Figure()
+        #self.canvas = matplotlib.backends.backend_qt4agg.FigureCanvasQTAgg(self.figure)
+        
+
+    def getAllTimeMinRating(self):
+        #Gets the Lowest Rating Logged
+        sql = "SELECT MIN(LOG_MOVIE_RATING) FROM log"
+        cursor = dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+        return myresult
+
+    def getAllTimeMaxRating(self):
+        #Gets the Highest Rating Logged
+        sql = "SELECT MAX(LOG_MOVIE_RATING) FROM log"
+        cursor = dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+        return myresult
+
+    def getAllTimeAvgRating(self):
+        #Gets the Average rating of all movies logged
+        sql = "SELECT AVG(LOG_MOVIE_RATING) FROM log"
+        cursor = dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+        return myresult
+
+    def getAllTimeCount(self):
+        #Gets the Count of all movies logged
+        sql = "SELECT COUNT(LOG_MOVIE_ID) FROM log"
+        cursor = dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+        return myresult
