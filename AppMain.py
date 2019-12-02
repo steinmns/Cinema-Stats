@@ -11,6 +11,7 @@ def startup():
     main_window.refreshLastTenTable()
     main_window.refreshMainLogTable()
     #main_window.generateGenrePie()
+    main_window.updateStats()
     sys.exit(app.exec_()) #Ensures clean exit when user closes window
     
 startup() 

@@ -131,7 +131,7 @@
        <string>Highest Rating: </string>
       </property>
      </widget>
-     <widget class="QLabel" name="HighestRatingLabel_2">
+     <widget class="QLabel" name="LowestRatingLabel">
       <property name="geometry">
        <rect>
         <x>50</x>

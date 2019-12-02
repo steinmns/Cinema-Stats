@@ -242,9 +242,19 @@ class Main_Win(QMainWindow):
 
     def getAllTimeCount(self):
         #Gets the Count of all movies logged
-        sql = "SELECT COUNT(LOG_MOVIE_ID) FROM log"
+        sql = "SELECT COUNT(LOG_ID) FROM log"
         cursor = dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
         return myresult
+
+    def updateStats(self):
+        moviesWatched = self.getAllTimeCount()
+        averageRating = self.getAllTimeAvgRating()
+        highestRated = self.getAllTimeMaxRating()
+        lowestRated = self.getAllTimeMinRating()
+        self.MoviesWatchedLabel.setText('Movies Watched: ' + str(moviesWatched[0][0])) 
+        self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10')
+        self.HighestRatingLabel.setText('Highest Rating: ' + str(highestRated[0][0]) + '/10')
+        self.LowestRatingLabel.setText('Lowest Rating: ' + str(lowestRated[0][0]) + '/10')
