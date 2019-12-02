@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 #External Classes
 from Classes.AddWindowClass import AddForm_Win
 from Classes.SettingsWindowClass import Settings_Win
+from Classes.HelpWindowClass import Help_Win
 
 #Icon and Styling Dependencies
 import qtawesome as qta #Possibly make this only material icons at some point
@@ -73,6 +74,12 @@ class Main_Win(QMainWindow):
         self.EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
         self.EditButton.setIcon(edit_icon)
 
+        #Help Button Setup
+        help_icon = qta.icon('mdi.help-circle-outline')
+        self.HelpButton = self.findChild(QtWidgets.QPushButton, 'HelpButton')
+        self.HelpButton.setIcon(help_icon)
+        self.HelpButton.clicked.connect(self.displayHelpWindow)
+
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
         addForm = AddForm_Win(self)
@@ -89,6 +96,14 @@ class Main_Win(QMainWindow):
             print("Success!")
         else:
             print("Closing Settings Menu")
+
+    def displayHelpWindow(self):
+        #Displays the Help Window when the HelpButton is pressed
+        helpWindow = Help_Win(self)
+        if helpWindow.exec_():
+            print("Success!")
+        else:
+            print("Closing Help Menu")
     
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
