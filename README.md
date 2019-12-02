@@ -8,8 +8,8 @@ Python based application to log and monitor viewing history
 - A full operation manual will be written once the interface is complete. The manual will also be available within the application.
 
 # Development
-- Currently working on the "Add New Movie" functionality
-- Last completed: Tables now display data from the database
+- Currently working on the "Insights Page" Functionality
+- Last completed: Help Menu
 
 # Dependencies
 - PyQt5
