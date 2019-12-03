@@ -1,11 +1,12 @@
 #PyQT Dependencies
 from PyQt5 import QtWidgets, QtCore, uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout
 
 #External Classes
 from Classes.AddWindowClass import AddForm_Win
 from Classes.SettingsWindowClass import Settings_Win
 from Classes.HelpWindowClass import Help_Win
+from Classes.EditWindowClass import EditForm_Win
 
 #Icon and Styling Dependencies
 import qtawesome as qta #Possibly make this only material icons at some point
@@ -17,6 +18,8 @@ import mysql.connector
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 matplotlib.style.use('ggplot')
 
 #Database Credentials
@@ -27,7 +30,6 @@ dbConnection = mysql.connector.connect(
     database="moviesheet"
 )
 #TODO: Add Pie chart widget to insights page
-#TODO: Format columns in tables
 #TODO: Add edit and delete buttons
 #TODO: Add automatic table refreshing
 #TODO: Add another theme
@@ -75,12 +77,20 @@ class Main_Win(QMainWindow):
         edit_icon = qta.icon('mdi.table-edit')
         self.EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
         self.EditButton.setIcon(edit_icon)
+        self.EditButton.clicked.connect(self.displayEditWindow)
 
         #Help Button Setup
         help_icon = qta.icon('mdi.help-circle-outline')
         self.HelpButton = self.findChild(QtWidgets.QPushButton, 'HelpButton')
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
+
+        layout = QVBoxLayout()  #DELETE ME
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)
+        self.generateGenrePie()
+        layout.addWidget(self.canvas)   #DELETE ME
+        self.setLayout(layout)  #DELETE ME
 
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
@@ -106,7 +116,15 @@ class Main_Win(QMainWindow):
             print("Success!")
         else:
             print("Closing Help Menu")
-    
+
+    def displayEditWindow(self):
+        #Displays the Edit Window when the EditButton is pressed
+        editWin = EditForm_Win(self)
+        if editWin.exec_():
+            print("Success!")
+        else:
+            print("Closing Edit Window") 
+
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
         #Should be called every time the insertMovie() is successfully called if the current tab is "Home"
@@ -223,11 +241,15 @@ class Main_Win(QMainWindow):
         counts.remove(0)
         genreLabels.remove("")
 
-        fig1, ax1 = plt.subplots()
-        ax1.pie(counts, explode=None, labels=genreLabels, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '', shadow=True, startangle=90)
-        ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        #self.figure = matplotlib.figure.Figure()
-        #self.canvas = matplotlib.backends.backend_qt4agg.FigureCanvasQTAgg(self.figure)
+        #fig1, ax1 = plt.subplots()
+        #ax1.pie(counts, explode=None, labels=genreLabels, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '', shadow=True, startangle=90)
+        #ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        self.figure.clear()
+        ax = self.figure.add_subplot(111)
+        ax.pie(counts, explode=None, labels=genreLabels)
+        ax.axis('equal')
+        self.canvas.draw()
         
 
     def getAllTimeMinRating(self):

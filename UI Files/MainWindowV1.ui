@@ -258,76 +258,66 @@
      <attribute name="title">
       <string>Insights</string>
      </attribute>
-     <widget class="QStackedWidget" name="InsightsStackedWidget">
+     <widget class="QTabWidget" name="InsightsTabWidget">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>1061</width>
-        <height>681</height>
+        <x>40</x>
+        <y>30</y>
+        <width>1031</width>
+        <height>651</height>
        </rect>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page">
-       <widget class="QLabel" name="MoviesVersusTimeLabel">
+      <widget class="QWidget" name="GenreInsightsTab">
+       <attribute name="title">
+        <string>Genre</string>
+       </attribute>
+       <widget class="QLabel" name="GenreStatisticsLabel">
         <property name="geometry">
          <rect>
-          <x>60</x>
-          <y>640</y>
-          <width>101</width>
+          <x>10</x>
+          <y>20</y>
+          <width>141</width>
           <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Movies Versus Time</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="widget" native="true">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>50</y>
-          <width>731</width>
-          <height>541</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="page_2">
-       <widget class="QWidget" name="GenrePieChartPlaceholder" native="true">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>80</y>
-          <width>831</width>
-          <height>541</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>5</pointsize>
+          <family>Mollen Personal Use</family>
+          <pointsize>14</pointsize>
          </font>
         </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(170, 0, 0);</string>
+        <property name="text">
+         <string>Genre Statistics</string>
         </property>
        </widget>
-       <widget class="QLabel" name="GenrePieChartLabel">
+      </widget>
+      <widget class="QWidget" name="TotalsInsightsTab">
+       <attribute name="title">
+        <string>Totals</string>
+       </attribute>
+       <widget class="QLabel" name="ViewingTotalsLabel">
         <property name="geometry">
          <rect>
-          <x>130</x>
-          <y>630</y>
-          <width>101</width>
+          <x>20</x>
+          <y>10</y>
+          <width>131</width>
           <height>31</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Mollen Personal Use</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Genre Pie Chart</string>
+         <string>Viewing Totals</string>
         </property>
        </widget>
       </widget>
