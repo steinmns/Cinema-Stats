@@ -35,6 +35,7 @@ dbConnection = mysql.connector.connect(
 #TODO: Add more graphs
 #TODO: Need error checking for if there are 0 movies in the table
 #TODO: Need confirmation/error messages to indicate the status of an action (ex: Movie added successfully!)
+#TODO: Add dynamic scaling
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
 
 class Main_Win(QMainWindow):
@@ -51,10 +52,6 @@ class Main_Win(QMainWindow):
         self.MainTabMenu.setTabIcon(0, hometab_icon)
         self.MainTabMenu.setTabIcon(1, logtab_icon)
         self.MainTabMenu.setTabIcon(2, insighttab_icon)
-
-        #Table column default sizing ON HOLD FOR NOW
-        #self.LastTenTable.setColumnWidth(1, 80)
-        #self.LastTenTable.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
 
         #Add Button Setup
         plus_icon = qta.icon('mdi.plus')
@@ -121,6 +118,12 @@ class Main_Win(QMainWindow):
         #self.LastTenTable.setRowCount(0)
         header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
         self.LastTenTable.setColumnCount(6) #Sets column count to 6
+        self.LastTenTable.setColumnWidth(0, 220)
+        self.LastTenTable.setColumnWidth(1, 75)
+        self.LastTenTable.setColumnWidth(2, 50)
+        self.LastTenTable.setColumnWidth(3, 90)
+        self.LastTenTable.setColumnWidth(4, 65)
+        self.LastTenTable.setColumnWidth(5, 307)
         self.LastTenTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
             self.LastTenTable.insertRow(row_number)
@@ -141,6 +144,12 @@ class Main_Win(QMainWindow):
         movies = self.getAllMovies()
         header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
         self.MainLogTable.setColumnCount(6) #Sets column count to 6
+        self.MainLogTable.setColumnWidth(0, 220)
+        self.MainLogTable.setColumnWidth(1, 75)
+        self.MainLogTable.setColumnWidth(2, 50)
+        self.MainLogTable.setColumnWidth(3, 90)
+        self.MainLogTable.setColumnWidth(4, 65)
+        self.MainLogTable.setColumnWidth(5, 307)
         self.MainLogTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(movies):    #Adds data from select statement to the table
             self.MainLogTable.insertRow(row_number)
