@@ -31,7 +31,11 @@ dbConnection = mysql.connector.connect(
 #TODO: Add edit and delete buttons
 #TODO: Add automatic table refreshing
 #TODO: Add another theme
+#TODO: Add more graph theme options
 #TODO: Add more graphs
+#TODO: Need error checking for if there are 0 movies in the table
+#TODO: Need confirmation/error messages to indicate the status of an action (ex: Movie added successfully!)
+#TODO: Adhere to a variable/class naming protocol and generally organize code further
 
 class Main_Win(QMainWindow):
     
@@ -68,6 +72,7 @@ class Main_Win(QMainWindow):
         delete_icon = qta.icon("mdi.trash-can-outline")
         self.DeleteButton = self.findChild(QtWidgets.QPushButton, 'DeleteButton')
         self.DeleteButton.setIcon(delete_icon)
+        self.DeleteButton.clicked.connect(self.deleteEntry)
 
         #Edit Button Setup
         edit_icon = qta.icon('mdi.table-edit')
@@ -144,13 +149,16 @@ class Main_Win(QMainWindow):
 
     def deleteEntry(self):
         #Deletes a selected entry from the table
-        model = self.model
-        indices = self.tableView.selectionModel().selectedRows() 
-        sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
-        vals = ['Alien', ]
+        title = self.LastTenTable.item(self.LastTenTable.currentRow(), 0).text()
+        date = self.LastTenTable.item(self.LastTenTable.currentRow(), 1).text()
+        #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
+        #vals = [title, date]
+        sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s"
+        vals = [title]
         cursor = dbConnection.cursor()
-        for index in sorted(indices):
-            model.removeRow(index.row()) 
+        cursor.execute(sql, vals)
+        dbConnection.commit()
+        cursor.close()
 
     def generateGenrePie(self):
         #Creates a pie chart of most watched genres
@@ -250,11 +258,12 @@ class Main_Win(QMainWindow):
         return myresult
 
     def updateStats(self):
+        #Gets the main page stats and displays them
         moviesWatched = self.getAllTimeCount()
         averageRating = self.getAllTimeAvgRating()
         highestRated = self.getAllTimeMaxRating()
         lowestRated = self.getAllTimeMinRating()
         self.MoviesWatchedLabel.setText('Movies Watched: ' + str(moviesWatched[0][0])) 
-        self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10')
+        self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10') #Make this have one or two decimal points eventually
         self.HighestRatingLabel.setText('Highest Rating: ' + str(highestRated[0][0]) + '/10')
         self.LowestRatingLabel.setText('Lowest Rating: ' + str(lowestRated[0][0]) + '/10')

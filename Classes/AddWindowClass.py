@@ -62,6 +62,7 @@ class AddForm_Win(QDialog):
             print("Error: " + self.errorMessage)
 
     def validateSubmission(self):
+        #Ensures that there are not errors with the movie entry being added
         if self.titleVal.text() == "" or self.titleVal.text() == None:
             self.errorMessage = "Title is Null"
             return False
