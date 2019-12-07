@@ -8,9 +8,7 @@ def startup():
     app = QApplication(sys.argv)    #System configs
     main_window = Main_Win()
     main_window.show()  #Displays the window
-    main_window.refreshLastTenTable()
-    main_window.refreshMainLogTable()
-    main_window.updateStats()
+    main_window.startup()
     sys.exit(app.exec_()) #Ensures clean exit when user closes window
     
 startup() 

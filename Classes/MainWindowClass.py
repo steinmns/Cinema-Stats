@@ -39,6 +39,8 @@ dbConnection = mysql.connector.connect(
 #TODO: Need confirmation/error messages to indicate the status of an action (ex: Movie added successfully!)
 #TODO: Add dynamic scaling
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
+#TODO: Add table sorting info to help page
+#TODO: Add more powerful features into the settings page (delete all data, load test data set)
 
 class Main_Win(QMainWindow):
     
@@ -85,12 +87,19 @@ class Main_Win(QMainWindow):
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
 
-        layout = QVBoxLayout()  #DELETE ME
-        self.figure = plt.figure()
-        self.canvas = FigureCanvas(self.figure)
+        #layout = QVBoxLayout()  #DELETE ME
+        #self.figure = plt.figure()
+        #self.canvas = FigureCanvas(self.figure)
         self.generateGenrePie()
-        layout.addWidget(self.canvas)   #DELETE ME
-        self.setLayout(layout)  #DELETE ME
+        #layout.addWidget(self.canvas)   #DELETE ME
+        #self.setLayout(layout)  #DELETE ME
+
+    def startup(self):
+        self.refreshLastTenTable()
+        self.refreshMainLogTable()
+        entriesCount = self.getAllTimeCount()   #Probably could make this a one liner, but not sure how yet
+        if(entriesCount[0][0] != 0):
+            self.updateStats()
 
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
@@ -241,15 +250,15 @@ class Main_Win(QMainWindow):
         counts.remove(0)
         genreLabels.remove("")
 
-        #fig1, ax1 = plt.subplots()
-        #ax1.pie(counts, explode=None, labels=genreLabels, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '', shadow=True, startangle=90)
-        #ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
-        self.figure.clear()
-        ax = self.figure.add_subplot(111)
-        ax.pie(counts, explode=None, labels=genreLabels)
-        ax.axis('equal')
-        self.canvas.draw()
+        fig1, ax1 = plt.subplots()
+        ax1.pie(counts, explode=None, labels=genreLabels, startangle=90)
+        ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        plt.show()
+        #self.figure.clear()
+        #ax = self.figure.add_subplot(111)
+        #ax.pie(counts, explode=None, labels=genreLabels)
+        #ax.axis('equal')
+        #self.canvas.draw()
         
 
     def getAllTimeMinRating(self):
