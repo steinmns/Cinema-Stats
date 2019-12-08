@@ -32,6 +32,7 @@ class EditForm_Win(QDialog):
         self.locationVal = ""
 
         #Populates edit form with current entry info
+        self.oldTitleVal = args[1]
         self.titleVal.setText(args[1])
         #self.dateVal.setDate(args[2])
         self.ratingVal.setCurrentText(args[3])
@@ -41,9 +42,10 @@ class EditForm_Win(QDialog):
 
     def updateMovie(self):
         #Updates a movie entry
+        #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
         if self.validateSubmission() == True:
-            sql = "UPDATE WHERE"
-            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText()] 
+            sql = "UPDATE log SET LOG_MOVIE_TITLE = %s, LOG_MOVIE_DATE = %s, LOG_MOVIE_RATING = %s, LOG_MOVIE_GENRE = %s, LOG_MOVIE_LOCATION = %s, LOG_MOVIE_COMMENTS = %s WHERE LOG_MOVIE_TITLE = %s"
+            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.oldTitleVal ] 
             cursor = dbConnection.cursor()
             cursor.execute(sql, vals)
             dbConnection.commit()

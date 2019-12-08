@@ -30,7 +30,6 @@ dbConnection = mysql.connector.connect(
     database="moviesheet"
 )
 #TODO: Add Pie chart widget to insights page
-#TODO: Add edit and delete buttons
 #TODO: Add automatic table refreshing
 #TODO: Add another theme
 #TODO: Add more graph theme options
@@ -193,6 +192,7 @@ class Main_Win(QMainWindow):
 
     def deleteEntry(self):
         #Deletes a selected entry from the table
+        #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
         title = self.LastTenTable.item(self.LastTenTable.currentRow(), 0).text()
         date = self.LastTenTable.item(self.LastTenTable.currentRow(), 1).text()
         #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
