@@ -21,6 +21,8 @@ import numpy as np
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 matplotlib.style.use('ggplot')
+#matplotlib.style.use('bmh')
+#matplotlib.style.use('fivethirtyeight')
 
 #Database Credentials
 dbConnection = mysql.connector.connect(
@@ -29,17 +31,22 @@ dbConnection = mysql.connector.connect(
     passwd="1234",
     database="moviesheet"
 )
+
+#Necessary Functionality
 #TODO: Add Pie chart widget to insights page
 #TODO: Add automatic table refreshing
 #TODO: Add another theme
-#TODO: Add more graph theme options
 #TODO: Add more graphs
 #TODO: Need confirmation/error messages to indicate the status of an action (ex: Movie added successfully!)
+
+#Bugs
+#TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
+
+#Nice to Haves (Lower Priority)
+#TODO: Add more graph theme options -> themes picked out, just need db table for settings and a dropdown in the settings menu
 #TODO: Add dynamic scaling aka some sort of layout
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
-#TODO: Add table sorting info to help page
 #TODO: Add more powerful features into the settings page (delete all data, load test data set)
-#TODO: Edit and delete button will only work on "recent" page since they pull from that table, would be more useful on main log page for now, but will need a current tab finder eventually
 
 class Main_Win(QMainWindow):
     
@@ -127,12 +134,12 @@ class Main_Win(QMainWindow):
 
     def displayEditWindow(self):
         #Displays the Edit Window when the EditButton is pressed
-        title = self.LastTenTable.item(self.LastTenTable.currentRow(), 0).text()
-        date = self.LastTenTable.item(self.LastTenTable.currentRow(), 1).text()
-        rating = self.LastTenTable.item(self.LastTenTable.currentRow(), 2).text()
-        genre = self.LastTenTable.item(self.LastTenTable.currentRow(), 3).text()
-        location = self.LastTenTable.item(self.LastTenTable.currentRow(), 4).text()
-        comments = self.LastTenTable.item(self.LastTenTable.currentRow(), 5).text()
+        title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
+        date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
+        rating = self.MainLogTable.item(self.MainLogTable.currentRow(), 2).text()
+        genre = self.MainLogTable.item(self.MainLogTable.currentRow(), 3).text()
+        location = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
+        comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
         
         editWin = EditForm_Win(self, title, date, rating, genre, location, comments) #, rating, genre, location, comments)
         #editWin = EditForm_Win(self, title)
@@ -193,8 +200,8 @@ class Main_Win(QMainWindow):
     def deleteEntry(self):
         #Deletes a selected entry from the table
         #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
-        title = self.LastTenTable.item(self.LastTenTable.currentRow(), 0).text()
-        date = self.LastTenTable.item(self.LastTenTable.currentRow(), 1).text()
+        title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
+        date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
         #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
         #vals = [title, date]
         sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s"

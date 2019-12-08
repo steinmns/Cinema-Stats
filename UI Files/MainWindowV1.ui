@@ -150,50 +150,6 @@
        <string>Lowest Rating: </string>
       </property>
      </widget>
-     <widget class="QPushButton" name="DeleteButton">
-      <property name="geometry">
-       <rect>
-        <x>840</x>
-        <y>10</y>
-        <width>41</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Delete Selected Row</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>26</width>
-        <height>26</height>
-       </size>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="EditButton">
-      <property name="geometry">
-       <rect>
-        <x>790</x>
-        <y>10</y>
-        <width>41</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Edit Selected Row</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>26</width>
-        <height>26</height>
-       </size>
-      </property>
-     </widget>
      <widget class="QLabel" name="AtaGlanceLabel">
       <property name="geometry">
        <rect>
@@ -251,6 +207,50 @@
       </property>
       <property name="sortingEnabled">
        <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="DeleteButton">
+      <property name="geometry">
+       <rect>
+        <x>840</x>
+        <y>10</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Delete Selected Row</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="EditButton">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>10</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Edit Selected Row</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>26</width>
+        <height>26</height>
+       </size>
       </property>
      </widget>
     </widget>
