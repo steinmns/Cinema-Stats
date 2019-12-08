@@ -12,9 +12,8 @@ dbConnection = mysql.connector.connect(
 
 class EditForm_Win(QDialog):
     def __init__(self, *args, **kwargs):
-        super(EditForm_Win, self).__init__(*args, **kwargs)
+        super(EditForm_Win, self).__init__()    #*args and *kwargs removed from super init
         self.ui = uic.loadUi('UI Files/EditMovieForm.ui', self)   #Loads Edit Movie Form Window
-        #self.DateWatchedEntry.setDate(QtCore.QDate.currentDate())
 
         #Definitions for add form entry fields
         self.submitButton = self.findChild(QtWidgets.QPushButton, 'SubmitButton')
@@ -31,6 +30,14 @@ class EditForm_Win(QDialog):
         self.commentVal = self.findChild(QtWidgets.QPlainTextEdit, 'MovieCommentsEntry')
         self.errorMessage = ""
         self.locationVal = ""
+
+        #Populates edit form with current entry info
+        self.titleVal.setText(args[1])
+        #self.dateVal.setDate(args[2])
+        self.ratingVal.setCurrentText(args[3])
+        self.genreVal.setCurrentText(args[4])
+        #self.locationVal = args[5]
+        self.commentVal.setPlainText(args[6])
 
     def updateMovie(self):
         #Updates a movie entry

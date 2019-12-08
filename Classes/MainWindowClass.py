@@ -35,12 +35,12 @@ dbConnection = mysql.connector.connect(
 #TODO: Add another theme
 #TODO: Add more graph theme options
 #TODO: Add more graphs
-#TODO: Need error checking for if there are 0 movies in the table
 #TODO: Need confirmation/error messages to indicate the status of an action (ex: Movie added successfully!)
-#TODO: Add dynamic scaling
+#TODO: Add dynamic scaling aka some sort of layout
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
 #TODO: Add table sorting info to help page
 #TODO: Add more powerful features into the settings page (delete all data, load test data set)
+#TODO: Edit and delete button will only work on "recent" page since they pull from that table, would be more useful on main log page for now, but will need a current tab finder eventually
 
 class Main_Win(QMainWindow):
     
@@ -128,7 +128,15 @@ class Main_Win(QMainWindow):
 
     def displayEditWindow(self):
         #Displays the Edit Window when the EditButton is pressed
-        editWin = EditForm_Win(self)
+        title = self.LastTenTable.item(self.LastTenTable.currentRow(), 0).text()
+        date = self.LastTenTable.item(self.LastTenTable.currentRow(), 1).text()
+        rating = self.LastTenTable.item(self.LastTenTable.currentRow(), 2).text()
+        genre = self.LastTenTable.item(self.LastTenTable.currentRow(), 3).text()
+        location = self.LastTenTable.item(self.LastTenTable.currentRow(), 4).text()
+        comments = self.LastTenTable.item(self.LastTenTable.currentRow(), 5).text()
+        
+        editWin = EditForm_Win(self, title, date, rating, genre, location, comments) #, rating, genre, location, comments)
+        #editWin = EditForm_Win(self, title)
         if editWin.exec_():
             print("Success!")
         else:
@@ -253,7 +261,7 @@ class Main_Win(QMainWindow):
         fig1, ax1 = plt.subplots()
         ax1.pie(counts, explode=None, labels=genreLabels, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.show()
+        #plt.show()
         #self.figure.clear()
         #ax = self.figure.add_subplot(111)
         #ax.pie(counts, explode=None, labels=genreLabels)
