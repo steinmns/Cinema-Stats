@@ -43,7 +43,7 @@ dbConnection = mysql.connector.connect(
 #TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
 
 #Nice to Haves (Lower Priority)
-#TODO: Add more graph theme options -> themes picked out, just need db table for settings and a dropdown in the settings menu
+#TODO: Add more graph theme options -> themes picked out, just need db table for settings and a methods to get and set it
 #TODO: Add dynamic scaling aka some sort of layout
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
 #TODO: Add more powerful features into the settings page (delete all data, load test data set)
@@ -101,11 +101,13 @@ class Main_Win(QMainWindow):
         #self.setLayout(layout)  #DELETE ME
 
     def startup(self):
+        #Methods that need to run right when the UI opens
         self.refreshLastTenTable()
         self.refreshMainLogTable()
         entriesCount = self.getAllTimeCount()   #Probably could make this a one liner, but not sure how yet
         if(entriesCount[0][0] != 0):
             self.updateStats()
+        #self.getSettings()
 
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
@@ -141,8 +143,7 @@ class Main_Win(QMainWindow):
         location = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
         comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
         
-        editWin = EditForm_Win(self, title, date, rating, genre, location, comments) #, rating, genre, location, comments)
-        #editWin = EditForm_Win(self, title)
+        editWin = EditForm_Win(self, title, date, rating, genre, location, comments)
         if editWin.exec_():
             print("Success!")
         else:
@@ -322,3 +323,47 @@ class Main_Win(QMainWindow):
         self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10') #Make this have one or two decimal points eventually
         self.HighestRatingLabel.setText('Highest Rating: ' + str(highestRated[0][0]) + '/10')
         self.LowestRatingLabel.setText('Lowest Rating: ' + str(lowestRated[0][0]) + '/10')
+
+    def getYearsMovies(self, year):
+        #Gets all of the movies watched in a given year. Year should be all 4 digits
+        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log WHERE LOG_MOVIE_DATE >= 01/01/%s ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
+        vals = [year]
+        cursor = dbConnection.cursor()
+        cursor.execute(sql,vals)
+        myresult = cursor.fetchall()
+        cursor.close()
+        return myresult
+
+    def generateMoviesPerMonth(self):
+        #Generates graph to display how many movies are watched each month of the year
+        annualMovies = self.getYearsMovies('2019')
+        counts = [0,0,0,0,0,0,0,0,0,0,0,0]
+        for movie in annualMovies:
+            if movie[1].month == 1:
+                counts[0] += 1
+            elif movie[1].month == 2:
+                counts[1] += 1
+            elif movie[1].month == 3:
+                counts[2] += 1
+            elif movie[1].month == 4:
+                counts[3] += 1
+            elif movie[1].month == 5:
+                counts[4] += 1
+            elif movie[1].month == 6:
+                counts[5] += 1
+            elif movie[1].month == 7:
+                counts[6] += 1
+            elif movie[1].month == 8:
+                counts[7] += 1
+            elif movie[1].month == 9:
+                counts[8] += 1
+            elif movie[1].month == 10:
+                counts[9] += 1
+            elif movie[1].month == 11:
+                counts[10] += 1
+            elif movie[1].month == 12:
+                counts[11] += 1
+        print(counts)
+
+                
+
