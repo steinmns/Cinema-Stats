@@ -7,6 +7,7 @@ from Classes.AddWindowClass import AddForm_Win
 from Classes.SettingsWindowClass import Settings_Win
 from Classes.HelpWindowClass import Help_Win
 from Classes.EditWindowClass import EditForm_Win
+from Classes.QToasterClass import QToaster
 
 #Icon and Styling Dependencies
 import qtawesome as qta #Possibly make this only material icons at some point
@@ -92,6 +93,7 @@ class Main_Win(QMainWindow):
         self.HelpButton = self.findChild(QtWidgets.QPushButton, 'HelpButton')
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
+        #self.HelpButton.clicked.connect(lambda: QToaster.showMessage(self, 'This is a test', corner=QtCore.Qt.BottomRightCorner))
 
         #layout = QVBoxLayout()  #DELETE ME
         #self.figure = plt.figure()
