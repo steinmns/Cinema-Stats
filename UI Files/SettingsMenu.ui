@@ -105,7 +105,7 @@
     </widget>
    </item>
    <item row="7" column="1">
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="GraphThemeDropdown">
      <item>
       <property name="text">
        <string>ggplot</string>
