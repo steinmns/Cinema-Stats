@@ -15,6 +15,7 @@ Python based application to log and monitor viewing history
 - PyQt5
 - Matplotlib
 - QtAwesome
+- MySQL Connector
 
 # Future Improvements/Ideas (Subject to change)
 - Separate tabs for TV and Music
