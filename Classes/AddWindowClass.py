@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from Classes.QToasterClass import QToaster
 import mysql.connector
 
 #Database Credentials
@@ -57,6 +58,7 @@ class AddForm_Win(QDialog):
             dbConnection.commit()
             cursor.close()
             print('Success!')
+            QToaster.showMessage(self.parent(), 'Entry Added', corner=QtCore.Qt.BottomRightCorner)
             self.close()
         else:
             print("Error: " + self.errorMessage)
@@ -64,16 +66,20 @@ class AddForm_Win(QDialog):
     def validateSubmission(self):
         #Ensures that there are not errors with the movie entry being added
         if self.titleVal.text() == "" or self.titleVal.text() == None:
-            self.errorMessage = "Title is Null"
+            self.errorMessage = "Please Enter a Title"
+            QToaster.showMessage(self.parent(), self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
         if self.dateVal.date().toString() == None:
-            self.errorMessage = "Date is Null"
+            self.errorMessage = "Please Enter a Date"
+            QToaster.showMessage(self.parent(), self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
         if self.ratingVal.currentText() == None:
-            self.errorMessage = "Rating is Null"
+            self.errorMessage = "Please Enter a Rating"
+            QToaster.showMessage(self.parent(), self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
         if self.genreVal.currentText() == None:
-            self.errorMessage = "Genre is Null"
+            self.errorMessage = "Please Enter a Genre"
+            QToaster.showMessage(self.parent(), self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
 
         if self.theaterChecked.isChecked() == True: 

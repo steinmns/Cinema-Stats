@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from Classes.QToasterClass import QToaster
 import mysql.connector
 
 #Database Credentials
@@ -41,6 +42,7 @@ class Settings_Win(QDialog):
         dbConnection.commit()
         cursor.close()
         print('Success!')
+        QToaster.showMessage(self.parent(), 'Settings Updated', corner=QtCore.Qt.BottomRightCorner)
         self.close()
 
     def getSettings(self):

@@ -93,7 +93,6 @@ class Main_Win(QMainWindow):
         self.HelpButton = self.findChild(QtWidgets.QPushButton, 'HelpButton')
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
-        #self.HelpButton.clicked.connect(lambda: QToaster.showMessage(self, 'This is a test', corner=QtCore.Qt.BottomRightCorner))
 
         #layout = QVBoxLayout()  #DELETE ME
         #self.figure = plt.figure()
@@ -213,6 +212,7 @@ class Main_Win(QMainWindow):
         cursor.execute(sql, vals)
         dbConnection.commit()
         cursor.close()
+        QToaster.showMessage(self, 'Entry Deleted', corner=QtCore.Qt.BottomRightCorner)
 
     def generateGenrePie(self):
         #Creates a pie chart of most watched genres
@@ -278,7 +278,6 @@ class Main_Win(QMainWindow):
         #ax.axis('equal')
         #self.canvas.draw()
         
-
     def getAllTimeMinRating(self):
         #Gets the Lowest Rating Logged
         sql = "SELECT MIN(LOG_MOVIE_RATING) FROM log"

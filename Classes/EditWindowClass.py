@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from Classes.QToasterClass import QToaster
 import mysql.connector
 
 #Database Credentials
@@ -32,6 +33,7 @@ class EditForm_Win(QDialog):
         self.locationVal = ""
 
         #Populates edit form with current entry info
+        self.parentWin = args[0]
         self.oldTitleVal = args[1]
         self.titleVal.setText(args[1])
         #self.dateVal.setDate(args[2])
@@ -51,6 +53,7 @@ class EditForm_Win(QDialog):
             dbConnection.commit()
             cursor.close()
             print('Success!')
+            QToaster.showMessage(self.parentWin, 'Entry Updated', corner=QtCore.Qt.BottomRightCorner)
             self.close()
         else:
             print("Error: " + self.errorMessage)
@@ -58,16 +61,20 @@ class EditForm_Win(QDialog):
     def validateSubmission(self):
         #Ensures that there are not errors with the movie entry being edited
         if self.titleVal.text() == "" or self.titleVal.text() == None:
-            self.errorMessage = "Title is Null"
+            self.errorMessage = "Please Enter a Title"
+            QToaster.showMessage(self.parentWin, self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
         if self.dateVal.date().toString() == None:
-            self.errorMessage = "Date is Null"
+            self.errorMessage = "Please Enter a Date"
+            QToaster.showMessage(self.parentWin, self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
         if self.ratingVal.currentText() == None:
-            self.errorMessage = "Rating is Null"
+            self.errorMessage = "Please Enter a Rating"
+            QToaster.showMessage(self.parentWin, self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
         if self.genreVal.currentText() == None:
-            self.errorMessage = "Genre is Null"
+            self.errorMessage = "Please Enter a Genre"
+            QToaster.showMessage(self.parentWin, self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
 
         if self.theaterChecked.isChecked() == True: 
