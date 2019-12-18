@@ -1,4 +1,4 @@
-# MovieSheet V2
+# Cinema Stats (Formerly MovieSheet V2)
 Python based application to log and monitor film viewing history.
 
 # Goals
