@@ -1,15 +1,10 @@
 # MovieSheet V2
-Python based application to log and monitor viewing history
+Python based application to log and monitor film viewing history.
 
-# Repository Format
-- The repository is comprised of a main python file and three UI files for each of the screens in the interface. This will likely become more modular in the future, but it is not a current priority.
-
-# Operation
-- A full operation manual will be written once the interface is complete. The manual will also be available within the application.
-
-# Development
-- Currently working on the "Insights Page" Functionality
-- Last completed: Help Menu
+# Goals
+- Make logging watched movies a simple process
+- Provide the user with information regarding their viewing history
+- Reduce the information overload that comes with the overwhelming amount of media available
 
 # Dependencies
 - PyQt5
