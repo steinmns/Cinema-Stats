@@ -25,6 +25,9 @@ matplotlib.style.use('ggplot')
 #matplotlib.style.use('bmh')
 #matplotlib.style.use('fivethirtyeight')
 
+#Other Dependencies
+import time
+
 #Database Credentials
 dbConnection = mysql.connector.connect(
     host="localhost",
@@ -35,13 +38,13 @@ dbConnection = mysql.connector.connect(
 
 #Necessary Functionality
 #TODO: Add Pie chart widget to insights page
-#TODO: Add automatic table refreshing
 #TODO: Add another theme
 #TODO: Add more graphs
-#TODO: Need confirmation/error messages to indicate the status of an action (ex: Movie added successfully!)
 
 #Bugs
 #TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
+#TODO: Need a way to handle 0 rows being selected when edit button is pressed
+#TODO: Need recently logged to update 
 
 #Nice to Haves (Lower Priority)
 #TODO: Add more graph theme options -> themes picked out, just need db table for settings and a methods to get and set it
@@ -144,11 +147,11 @@ class Main_Win(QMainWindow):
         location = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
         comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
         
-        editWin = EditForm_Win(self, title, date, rating, genre, location, comments)
+        editWin = EditForm_Win(self, title, date, rating, genre, location, comments, self.MainLogTable.currentRow())
         if editWin.exec_():
             print("Success!")
         else:
-            print("Closing Edit Window") 
+            print("Closing Edit Window")
 
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
@@ -182,6 +185,9 @@ class Main_Win(QMainWindow):
         cursor.close()
         return myresult
 
+    def clearMainTest(self):
+        self.MainLogTable.setRowCount(0)
+
     def refreshMainLogTable(self):
         #Refreshes table with all movies logged
         movies = self.getAllMovies()
@@ -212,6 +218,10 @@ class Main_Win(QMainWindow):
         cursor.execute(sql, vals)
         dbConnection.commit()
         cursor.close()
+
+        #Deleting from MainLogTable
+        self.MainLogTable.removeRow(self.MainLogTable.currentRow())
+
         QToaster.showMessage(self, 'Entry Deleted', corner=QtCore.Qt.BottomRightCorner)
 
     def generateGenrePie(self):

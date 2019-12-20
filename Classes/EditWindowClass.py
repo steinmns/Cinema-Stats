@@ -34,13 +34,14 @@ class EditForm_Win(QDialog):
 
         #Populates edit form with current entry info
         self.parentWin = args[0]
-        self.oldTitleVal = args[1]
+        self.oldTitleVal = args[1]  #Used in where clause to find the correct movie in the log to update -> only necessary until I get this updating on ID
         self.titleVal.setText(args[1])
         #self.dateVal.setDate(args[2])
         self.ratingVal.setCurrentText(args[3])
         self.genreVal.setCurrentText(args[4])
         #self.locationVal = args[5]
         self.commentVal.setPlainText(args[6])
+        self.curRow = args[7]
 
     def updateMovie(self):
         #Updates a movie entry
@@ -52,7 +53,15 @@ class EditForm_Win(QDialog):
             cursor.execute(sql, vals)
             dbConnection.commit()
             cursor.close()
-            print('Success!')
+            
+            #Updating Main Log Table
+            i = 0
+            vals.pop() #Removes the old title from the list so it doesn't interfere with updating the Main Log table
+            for data in enumerate(vals):
+                self.parentWin.MainLogTable.setItem(self.curRow, i, QtWidgets.QTableWidgetItem(data[1]))
+                if(i < 5):
+                    i += 1
+
             QToaster.showMessage(self.parentWin, 'Entry Updated', corner=QtCore.Qt.BottomRightCorner)
             self.close()
         else:

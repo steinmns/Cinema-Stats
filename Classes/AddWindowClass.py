@@ -57,7 +57,15 @@ class AddForm_Win(QDialog):
             cursor.execute(sql, vals)
             dbConnection.commit()
             cursor.close()
-            print('Success!')
+
+            #Inserting into Main Log Table
+            self.parent().MainLogTable.insertRow(self.parent().MainLogTable.rowCount()) #Using rowcount val since arrays start at 0 
+            i = 0
+            newRow = self.parent().MainLogTable.rowCount() - 1
+            for data in enumerate(vals):
+                self.parent().MainLogTable.setItem(newRow, i, QtWidgets.QTableWidgetItem(str(data[1])))
+                i += 1
+
             QToaster.showMessage(self.parent(), 'Entry Added', corner=QtCore.Qt.BottomRightCorner)
             self.close()
         else:
