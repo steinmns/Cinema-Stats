@@ -21,9 +21,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-matplotlib.style.use('ggplot')
-#matplotlib.style.use('bmh')
-#matplotlib.style.use('fivethirtyeight')
 
 #Other Dependencies
 import time
@@ -96,10 +93,13 @@ class Main_Win(QMainWindow):
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
 
+        appSettings = Settings_Win(self).getSettings()
+        matplotlib.style.use(appSettings[0][2])
+
         #layout = QVBoxLayout()  #DELETE ME
         #self.figure = plt.figure()
         #self.canvas = FigureCanvas(self.figure)
-        self.generateGenrePie()
+        #self.generateGenrePie()
         #layout.addWidget(self.canvas)   #DELETE ME
         #self.setLayout(layout)  #DELETE ME
 
@@ -110,7 +110,6 @@ class Main_Win(QMainWindow):
         entriesCount = self.getAllTimeCount()   #Probably could make this a one liner, but not sure how yet
         if(entriesCount[0][0] != 0):
             self.updateStats()
-        #self.getSettings()
 
     def displayAddMovieForm(self):
         # Displays the Add Movie Form when the AddMediaButton is pressed
@@ -286,7 +285,7 @@ class Main_Win(QMainWindow):
         fig1, ax1 = plt.subplots()
         ax1.pie(counts, explode=None, labels=genreLabels, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        #plt.show()
+        plt.show()
         #self.figure.clear()
         #ax = self.figure.add_subplot(111)
         #ax.pie(counts, explode=None, labels=genreLabels)
