@@ -43,11 +43,10 @@ dbConnection = mysql.connector.connect(
 
 #Bugs
 #TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
-#TODO: Need a way to handle 0 rows being selected when edit button is pressed
-#TODO: Need recently logged to update 
+#TODO: Need recently logged app table to update 
 
 #Nice to Haves (Lower Priority)
-#TODO: Add more graph theme options -> themes picked out, just need db table for settings and a methods to get and set it
+#TODO: Add more graph theme options -> just need method to actually apply it
 #TODO: Add dynamic scaling aka some sort of layout
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
 #TODO: Add more powerful features into the settings page (delete all data, load test data set)
@@ -140,18 +139,21 @@ class Main_Win(QMainWindow):
 
     def displayEditWindow(self):
         #Displays the Edit Window when the EditButton is pressed
-        title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
-        date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
-        rating = self.MainLogTable.item(self.MainLogTable.currentRow(), 2).text()
-        genre = self.MainLogTable.item(self.MainLogTable.currentRow(), 3).text()
-        location = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
-        comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
-        
-        editWin = EditForm_Win(self, title, date, rating, genre, location, comments, self.MainLogTable.currentRow())
-        if editWin.exec_():
-            print("Success!")
+        if(len(self.MainLogTable.selectedItems()) > 0):
+            title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
+            date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
+            rating = self.MainLogTable.item(self.MainLogTable.currentRow(), 2).text()
+            genre = self.MainLogTable.item(self.MainLogTable.currentRow(), 3).text()
+            location = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
+            comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
+            
+            editWin = EditForm_Win(self, title, date, rating, genre, location, comments, self.MainLogTable.currentRow())
+            if editWin.exec_():
+                print("Success!")
+            else:
+                print("Closing Edit Window")
         else:
-            print("Closing Edit Window")
+            QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
     def refreshLastTenTable(self):
         #Refreshes table with last ten movies watched
@@ -208,21 +210,24 @@ class Main_Win(QMainWindow):
     def deleteEntry(self):
         #Deletes a selected entry from the table
         #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
-        title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
-        date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
-        #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
-        #vals = [title, date]
-        sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s"
-        vals = [title]
-        cursor = dbConnection.cursor()
-        cursor.execute(sql, vals)
-        dbConnection.commit()
-        cursor.close()
+        if(len(self.MainLogTable.selectedItems()) > 0):
+            title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
+            date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
+            #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
+            #vals = [title, date]
+            sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s"
+            vals = [title]
+            cursor = dbConnection.cursor()
+            cursor.execute(sql, vals)
+            dbConnection.commit()
+            cursor.close()
 
-        #Deleting from MainLogTable
-        self.MainLogTable.removeRow(self.MainLogTable.currentRow())
+            #Deleting from MainLogTable
+            self.MainLogTable.removeRow(self.MainLogTable.currentRow())
 
-        QToaster.showMessage(self, 'Entry Deleted', corner=QtCore.Qt.BottomRightCorner)
+            QToaster.showMessage(self, 'Entry Deleted', corner=QtCore.Qt.BottomRightCorner)
+        else:
+            QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
     def generateGenrePie(self):
         #Creates a pie chart of most watched genres
