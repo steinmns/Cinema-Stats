@@ -43,7 +43,6 @@ dbConnection = mysql.connector.connect(
 #TODO: Need recently logged app table to update 
 
 #Nice to Haves (Lower Priority)
-#TODO: Add more graph theme options -> just need method to actually apply it
 #TODO: Add dynamic scaling aka some sort of layout
 #TODO: Adhere to a variable/class naming protocol and generally organize code further
 #TODO: Add more powerful features into the settings page (delete all data, load test data set)
@@ -95,6 +94,8 @@ class Main_Win(QMainWindow):
 
         appSettings = Settings_Win(self).getSettings()
         matplotlib.style.use(appSettings[0][2])
+
+        #self.generateMoviesPerMonth()
 
         #layout = QVBoxLayout()  #DELETE ME
         #self.figure = plt.figure()
@@ -351,7 +352,9 @@ class Main_Win(QMainWindow):
 
     def generateMoviesPerMonth(self):
         #Generates graph to display how many movies are watched each month of the year
+        #Possibly make this dynamic so it can handle making a line chart or a bar chart
         annualMovies = self.getYearsMovies('2019')
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         counts = [0,0,0,0,0,0,0,0,0,0,0,0]
         for movie in annualMovies:
             if movie[1].month == 1:
@@ -378,7 +381,10 @@ class Main_Win(QMainWindow):
                 counts[10] += 1
             elif movie[1].month == 12:
                 counts[11] += 1
-        print(counts)
 
-                
-
+        fig, ax = plt.subplots()
+        ax.plot(months, counts)
+        ax.set(xlabel='Month', ylabel='Movies Watched', title='Movies Per Month')
+        ax.grid()
+        plt.show()
+        
