@@ -92,22 +92,18 @@ class Main_Win(QMainWindow):
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
 
+        #Settings
         appSettings = Settings_Win(self).getSettings()
         matplotlib.style.use(appSettings[0][2])
 
+        #Graph Generation
         #self.generateMoviesPerMonth()
-
-        #layout = QVBoxLayout()  #DELETE ME
-        #self.figure = plt.figure()
-        #self.canvas = FigureCanvas(self.figure)
-        #self.generateGenrePie()
-        #layout.addWidget(self.canvas)   #DELETE ME
-        #self.setLayout(layout)  #DELETE ME
+        #self.generateGenrePie()  
 
     def startup(self):
         #Methods that need to run right when the UI opens
-        self.refreshLastTenTable()
-        self.refreshMainLogTable()
+        self.loadLastTenTable()
+        self.loadMainLogTable()
         entriesCount = self.getAllTimeCount()   #Probably could make this a one liner, but not sure how yet
         if(entriesCount[0][0] != 0):
             self.updateStats()
@@ -155,15 +151,13 @@ class Main_Win(QMainWindow):
         else:
             QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
-    def refreshLastTenTable(self):
-        #Refreshes table with last ten movies watched
-        #Should be called every time the insertMovie() is successfully called if the current tab is "Home"
+    def loadLastTenTable(self):
+        #Loads table with last ten movies watched
         sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
         cursor = dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
-        #self.LastTenTable.setRowCount(0)
         header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
         self.LastTenTable.setColumnCount(6) #Sets column count to 6
         self.LastTenTable.setColumnWidth(0, 220)
@@ -190,8 +184,8 @@ class Main_Win(QMainWindow):
     def clearMainTest(self):
         self.MainLogTable.setRowCount(0)
 
-    def refreshMainLogTable(self):
-        #Refreshes table with all movies logged
+    def loadMainLogTable(self):
+        #Loads table with all movies logged
         movies = self.getAllMovies()
         header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
         self.MainLogTable.setColumnCount(6) #Sets column count to 6
