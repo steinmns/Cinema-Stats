@@ -17,9 +17,10 @@ import mysql.connector
 
 #Graphing Dependencies
 import matplotlib
+matplotlib.use('QT5Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.figure import Figure
 
 #Other Dependencies
@@ -34,13 +35,13 @@ dbConnection = mysql.connector.connect(
 )
 
 #Necessary Functionality
-#TODO: Add Pie chart widget to insights page
 #TODO: Add another theme
 #TODO: Add more graphs
 
 #Bugs
 #TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
 #TODO: Need recently logged app table to update 
+#TODO: Fix graph labels from being cutoff
 
 #Nice to Haves (Lower Priority)
 #TODO: Add dynamic scaling aka some sort of layout
@@ -97,8 +98,8 @@ class Main_Win(QMainWindow):
         matplotlib.style.use(appSettings[0][2])
 
         #Graph Generation
-        #self.generateMoviesPerMonth()
-        #self.generateGenrePie()  
+        self.generateMoviesPerMonth()
+        self.generateGenrePie()  
 
     def startup(self):
         #Methods that need to run right when the UI opens
@@ -280,12 +281,11 @@ class Main_Win(QMainWindow):
         fig1, ax1 = plt.subplots()
         ax1.pie(counts, explode=None, labels=genreLabels, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.show()
-        #self.figure.clear()
-        #ax = self.figure.add_subplot(111)
-        #ax.pie(counts, explode=None, labels=genreLabels)
-        #ax.axis('equal')
-        #self.canvas.draw()
+        
+        plotWidget = FigureCanvas(fig1)
+        lay = QtWidgets.QVBoxLayout(self.GenrePiePlaceholder)  
+        lay.setContentsMargins(0, 0, 0, 0)      
+        lay.addWidget(plotWidget)
         
     def getAllTimeMinRating(self):
         #Gets the Lowest Rating Logged
@@ -380,5 +380,11 @@ class Main_Win(QMainWindow):
         ax.plot(months, counts)
         ax.set(xlabel='Month', ylabel='Movies Watched', title='Movies Per Month')
         ax.grid()
-        plt.show()
+        plt.xticks(months, rotation='vertical')
+
+        plotWidget = FigureCanvas(fig)
+        lay = QtWidgets.QVBoxLayout(self.TotalsGraphPlaceholder)  
+        lay.setContentsMargins(0, 0, 0, 0) #NEED TO FIX THE labels being cutoff     
+        lay.addWidget(plotWidget)
+        
         

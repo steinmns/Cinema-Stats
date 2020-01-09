@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="HomeTab">
      <attribute name="title">
@@ -271,7 +271,7 @@
        <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="GenreInsightsTab">
        <attribute name="title">
@@ -296,6 +296,16 @@
          <string>Genre Statistics</string>
         </property>
        </widget>
+       <widget class="QWidget" name="GenrePiePlaceholder" native="true">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>50</y>
+          <width>571</width>
+          <height>521</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="TotalsInsightsTab">
        <attribute name="title">
@@ -318,6 +328,16 @@
         </property>
         <property name="text">
          <string>Viewing Totals</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="TotalsGraphPlaceholder" native="true">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>961</width>
+          <height>361</height>
+         </rect>
         </property>
        </widget>
       </widget>
