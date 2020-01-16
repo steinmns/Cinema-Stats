@@ -25,6 +25,7 @@ from matplotlib.figure import Figure
 
 #Other Dependencies
 import time
+import math
 
 #Database Credentials
 dbConnection = mysql.connector.connect(
@@ -41,7 +42,6 @@ dbConnection = mysql.connector.connect(
 #Bugs
 #TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
 #TODO: Need recently logged app table to update 
-#TODO: Fix graph labels from being cutoff
 
 #Nice to Haves (Lower Priority)
 #TODO: Add dynamic scaling aka some sort of layout
@@ -380,11 +380,14 @@ class Main_Win(QMainWindow):
         ax.plot(months, counts)
         ax.set(xlabel='Month', ylabel='Movies Watched', title='Movies Per Month')
         ax.grid()
+        yRange = range(min(counts), math.ceil(max(counts))+1)   #Averages counts values for axis labels and prevents decimal values
+        plt.yticks(yRange)
         plt.xticks(months, rotation='vertical')
+        plt.tight_layout()  #Mostly Fixes labels being cutoff
 
         plotWidget = FigureCanvas(fig)
         lay = QtWidgets.QVBoxLayout(self.TotalsGraphPlaceholder)  
-        lay.setContentsMargins(0, 0, 0, 0) #NEED TO FIX THE labels being cutoff     
+        lay.setContentsMargins(0, 0, 0, 0) 
         lay.addWidget(plotWidget)
         
         

@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="HomeTab">
      <attribute name="title">
@@ -271,7 +271,7 @@
        <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="GenreInsightsTab">
        <attribute name="title">
@@ -336,7 +336,7 @@
           <x>20</x>
           <y>50</y>
           <width>961</width>
-          <height>361</height>
+          <height>491</height>
          </rect>
         </property>
        </widget>
