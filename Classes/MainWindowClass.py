@@ -40,7 +40,6 @@ dbConnection = mysql.connector.connect(
 #TODO: Add more graphs
 
 #Bugs
-#TODO: Change edit and delete operations to pull from IDs instead of title because it can't handle IDs
 #TODO: Need recently logged app table to update 
 
 #Nice to Haves (Lower Priority)
@@ -137,14 +136,15 @@ class Main_Win(QMainWindow):
     def displayEditWindow(self):
         #Displays the Edit Window when the EditButton is pressed
         if(len(self.MainLogTable.selectedItems()) > 0):
-            title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
-            date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
-            rating = self.MainLogTable.item(self.MainLogTable.currentRow(), 2).text()
-            genre = self.MainLogTable.item(self.MainLogTable.currentRow(), 3).text()
-            location = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
-            comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
+            entryID = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
+            title = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
+            date = self.MainLogTable.item(self.MainLogTable.currentRow(), 2).text()
+            rating = self.MainLogTable.item(self.MainLogTable.currentRow(), 3).text()
+            genre = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
+            location = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
+            comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 6).text()
             
-            editWin = EditForm_Win(self, title, date, rating, genre, location, comments, self.MainLogTable.currentRow())
+            editWin = EditForm_Win(self, entryID, title, date, rating, genre, location, comments, self.MainLogTable.currentRow())
             if editWin.exec_():
                 print("Success!")
             else:
@@ -154,19 +154,20 @@ class Main_Win(QMainWindow):
 
     def loadLastTenTable(self):
         #Loads table with last ten movies watched
-        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
+        sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
         cursor = dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
-        header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
-        self.LastTenTable.setColumnCount(6) #Sets column count to 6
-        self.LastTenTable.setColumnWidth(0, 220)
-        self.LastTenTable.setColumnWidth(1, 75)
-        self.LastTenTable.setColumnWidth(2, 50)
-        self.LastTenTable.setColumnWidth(3, 90)
-        self.LastTenTable.setColumnWidth(4, 65)
-        self.LastTenTable.setColumnWidth(5, 307)
+        header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments"]
+        self.LastTenTable.setColumnCount(7) #Sets column count to 7
+        self.LastTenTable.setColumnHidden(0, True)
+        self.LastTenTable.setColumnWidth(1, 220)
+        self.LastTenTable.setColumnWidth(2, 75)
+        self.LastTenTable.setColumnWidth(3, 50)
+        self.LastTenTable.setColumnWidth(4, 90)
+        self.LastTenTable.setColumnWidth(5, 65)
+        self.LastTenTable.setColumnWidth(6, 307)
         self.LastTenTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
             self.LastTenTable.insertRow(row_number)
@@ -175,7 +176,7 @@ class Main_Win(QMainWindow):
 
     def getAllMovies(self):
         #Returns all of the movies logged
-        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
+        sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
         cursor = dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
@@ -188,14 +189,15 @@ class Main_Win(QMainWindow):
     def loadMainLogTable(self):
         #Loads table with all movies logged
         movies = self.getAllMovies()
-        header = ["Title", "Date", "Rating", "Genre", "Location", "Comments"]
-        self.MainLogTable.setColumnCount(6) #Sets column count to 6
-        self.MainLogTable.setColumnWidth(0, 220)
-        self.MainLogTable.setColumnWidth(1, 75)
-        self.MainLogTable.setColumnWidth(2, 50)
-        self.MainLogTable.setColumnWidth(3, 90)
-        self.MainLogTable.setColumnWidth(4, 65)
-        self.MainLogTable.setColumnWidth(5, 307)
+        header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments"]
+        self.MainLogTable.setColumnCount(7) #Sets column count to 7
+        self.MainLogTable.setColumnHidden(0, True)
+        self.MainLogTable.setColumnWidth(1, 220)
+        self.MainLogTable.setColumnWidth(2, 75)
+        self.MainLogTable.setColumnWidth(3, 50)
+        self.MainLogTable.setColumnWidth(4, 90)
+        self.MainLogTable.setColumnWidth(5, 65)
+        self.MainLogTable.setColumnWidth(6, 307)
         self.MainLogTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(movies):    #Adds data from select statement to the table
             self.MainLogTable.insertRow(row_number)
@@ -206,12 +208,11 @@ class Main_Win(QMainWindow):
         #Deletes a selected entry from the table
         #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
         if(len(self.MainLogTable.selectedItems()) > 0):
-            title = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
-            date = self.MainLogTable.item(self.MainLogTable.currentRow(), 1).text()
+            entryID = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
             #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
             #vals = [title, date]
-            sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s"
-            vals = [title]
+            sql = "DELETE FROM log WHERE LOG_ID = %s"
+            vals = [entryID]
             cursor = dbConnection.cursor()
             cursor.execute(sql, vals)
             dbConnection.commit()
@@ -278,9 +279,11 @@ class Main_Win(QMainWindow):
         counts.remove(0)
         genreLabels.remove("")
 
+        #graphColors = ['forestgreen', 'slategrey', 'tan', 'darkorchid', 'yellowgreen', 'coral', 'slateblue', 'khaki', 'plum', 'sienna', 'olivedrab', 'seagreen']
         fig1, ax1 = plt.subplots()
         ax1.pie(counts, explode=None, labels=genreLabels, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        #ax1.set_prop_cycle(color=graphColors)
         
         plotWidget = FigureCanvas(fig1)
         lay = QtWidgets.QVBoxLayout(self.GenrePiePlaceholder)  

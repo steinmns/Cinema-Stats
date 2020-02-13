@@ -35,14 +35,14 @@ class EditForm_Win(QDialog):
 
         #Populates edit form with current entry info
         self.parentWin = args[0]
-        self.oldTitleVal = args[1]  #Used in where clause to find the correct movie in the log to update -> only necessary until I get this updating on ID
-        self.titleVal.setText(args[1])
-        self.dateVal.setDate((datetime.strptime(args[2], '%Y-%m-%d')).date())  #Converts date string to date object
-        self.ratingVal.setCurrentText(args[3])
-        self.genreVal.setCurrentText(args[4])
-        self.locationVal = args[5]
-        self.commentVal.setPlainText(args[6])
-        self.curRow = args[7]
+        self.entryIdVal = args[1]
+        self.titleVal.setText(args[2])
+        self.dateVal.setDate((datetime.strptime(args[3], '%Y-%m-%d')).date())  #Converts date string to date object
+        self.ratingVal.setCurrentText(args[4])
+        self.genreVal.setCurrentText(args[5])
+        self.locationVal = args[6]
+        self.commentVal.setPlainText(args[7])
+        self.curRow = args[8]
         if(self.locationVal == 'Home'):
             self.homeChecked.setChecked(True)
         elif(self.locationVal == 'Theater'):
@@ -50,21 +50,20 @@ class EditForm_Win(QDialog):
 
     def updateMovie(self):
         #Updates a movie entry
-        #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
         if self.validateSubmission() == True:
-            sql = "UPDATE log SET LOG_MOVIE_TITLE = %s, LOG_MOVIE_DATE = %s, LOG_MOVIE_RATING = %s, LOG_MOVIE_GENRE = %s, LOG_MOVIE_LOCATION = %s, LOG_MOVIE_COMMENTS = %s WHERE LOG_MOVIE_TITLE = %s"
-            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.oldTitleVal ] 
+            sql = "UPDATE log SET LOG_MOVIE_TITLE = %s, LOG_MOVIE_DATE = %s, LOG_MOVIE_RATING = %s, LOG_MOVIE_GENRE = %s, LOG_MOVIE_LOCATION = %s, LOG_MOVIE_COMMENTS = %s WHERE LOG_ID = %s"
+            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.entryIdVal] 
             cursor = dbConnection.cursor()
             cursor.execute(sql, vals)
             dbConnection.commit()
             cursor.close()
             
             #Updating Main Log Table
-            i = 0
-            vals.pop() #Removes the old title from the list so it doesn't interfere with updating the Main Log table
+            i = 1
+            vals.pop() #Removes the IDVal from the list so it doesn't interfere with updating the Main Log table -> ID should never be updated
             for data in enumerate(vals):
                 self.parentWin.MainLogTable.setItem(self.curRow, i, QtWidgets.QTableWidgetItem(data[1]))
-                if(i < 5):
+                if(i < 6):
                     i += 1
 
             QToaster.showMessage(self.parentWin, 'Entry Updated', corner=QtCore.Qt.BottomRightCorner)
