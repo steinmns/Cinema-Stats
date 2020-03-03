@@ -343,6 +343,75 @@
       </widget>
      </widget>
     </widget>
+    <widget class="QWidget" name="ImportTab">
+     <attribute name="title">
+      <string>Data Import</string>
+     </attribute>
+     <widget class="QPushButton" name="letterboxdImportButton">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>240</y>
+        <width>251</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Import From Letterboxd Download</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="movieSheetImportButton">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>330</y>
+        <width>251</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Import From MovieSheet</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="DataImportLabel">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>20</y>
+        <width>411</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Mollen Personal Use</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Import Data From Other Platforms</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="SelectImportSourceLabel">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>180</y>
+        <width>281</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Mollen Personal Use</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Please Select Import Source:</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QPushButton" name="AddMediaButton">
     <property name="geometry">

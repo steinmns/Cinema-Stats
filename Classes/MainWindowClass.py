@@ -58,9 +58,11 @@ class Main_Win(QMainWindow):
         hometab_icon = qta.icon('mdi.home-outline')
         logtab_icon = qta.icon('mdi.file-document-box-outline') #mdi.folder-text-outline
         insighttab_icon = qta.icon('mdi.chart-line')
+        importtab_icon = qta.icon('mdi.upload')
         self.MainTabMenu.setTabIcon(0, hometab_icon)
         self.MainTabMenu.setTabIcon(1, logtab_icon)
         self.MainTabMenu.setTabIcon(2, insighttab_icon)
+        self.MainTabMenu.setTabIcon(3, importtab_icon)
 
         #Add Button Setup
         plus_icon = qta.icon('mdi.plus')
@@ -191,7 +193,7 @@ class Main_Win(QMainWindow):
         movies = self.getAllMovies()
         header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments"]
         self.MainLogTable.setColumnCount(7) #Sets column count to 7
-        self.MainLogTable.setColumnHidden(0, True)
+        self.MainLogTable.setColumnHidden(0, True)  #Hides ID column because it clutters the table in the UI -> used exclusively for edit and delete operations
         self.MainLogTable.setColumnWidth(1, 220)
         self.MainLogTable.setColumnWidth(2, 75)
         self.MainLogTable.setColumnWidth(3, 50)
@@ -206,11 +208,8 @@ class Main_Win(QMainWindow):
 
     def deleteEntry(self):
         #Deletes a selected entry from the table
-        #THIS NEEDS A WAY TO GET MOVIE BY ID BECAUSE IT CANNOT HANDLE DUPLICATES CURRENTLY
         if(len(self.MainLogTable.selectedItems()) > 0):
             entryID = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
-            #sql = "DELETE FROM log WHERE LOG_MOVIE_TITLE = %s AND WHERE LOG_MOVIE_DATE = %s"
-            #vals = [title, date]
             sql = "DELETE FROM log WHERE LOG_ID = %s"
             vals = [entryID]
             cursor = dbConnection.cursor()
