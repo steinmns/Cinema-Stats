@@ -94,6 +94,12 @@ class Main_Win(QMainWindow):
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
 
+        #Refresh Recent Button Setup
+        refresh_icon = qta.icon('mdi.refresh')
+        self.RefreshRecentButton = self.findChild(QtWidgets.QPushButton, 'RefreshRecentButton')
+        self.RefreshRecentButton.setIcon(refresh_icon)
+        self.RefreshRecentButton.clicked.connect(self.refreshLastTen)
+        
         #Settings
         appSettings = Settings_Win(self).getSettings()
         matplotlib.style.use(appSettings[0][2])
@@ -116,7 +122,7 @@ class Main_Win(QMainWindow):
         if addForm.exec_():
             print("Success!")
         else:
-            #self.refreshLastTenTable()
+            self.refreshLastTen()
             print("Closing Add Form")
 
     def displaySettingsMenu(self):
@@ -185,8 +191,31 @@ class Main_Win(QMainWindow):
         cursor.close()
         return myresult
 
-    def clearMainTest(self):
-        self.MainLogTable.setRowCount(0)
+    def refreshLastTen(self):
+        #Refreshes the table of recently watched movies after a new entry is added or a change
+        print('Refreshing Last10 Table')
+        self.LastTenTable.clearContents()
+
+        #When adding one new movie, the refresh works fine. Anything more than that, the result from the first add is returned every time
+        sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
+        cursor = dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+
+        for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
+            for column_number, data in enumerate(row_data):
+                self.LastTenTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
+                
+
+    def refreshMainLog(self):
+        #Refreshes the table of watched movies after a new entry is added or a change
+        #while (self.MainLogTable.rowCount() > 0):
+            #self.MainLogTable.removeRow(0)
+
+        self.MainLogTable.clearContents()
+
+        #self.loadMainLogTable()
 
     def loadMainLogTable(self):
         #Loads table with all movies logged

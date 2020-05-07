@@ -60,11 +60,13 @@ class AddForm_Win(QDialog):
 
             #Inserting into Main Log Table
             self.parent().MainLogTable.insertRow(self.parent().MainLogTable.rowCount()) #Using rowcount val since arrays start at 0 
-            i = 0
+            i = 1
             newRow = self.parent().MainLogTable.rowCount() - 1
+            vals.pop() #Removes the IDVal from the list so it doesn't interfere with updating the Main Log table -> ID should never be updated
             for data in enumerate(vals):
                 self.parent().MainLogTable.setItem(newRow, i, QtWidgets.QTableWidgetItem(str(data[1])))
-                i += 1
+                if(i < 6):
+                    i += 1
 
             QToaster.showMessage(self.parent(), 'Entry Added', corner=QtCore.Qt.BottomRightCorner)
             self.close()

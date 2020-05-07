@@ -169,6 +169,28 @@
        <string>At a Glance</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="RefreshRecentButton">
+      <property name="geometry">
+       <rect>
+        <x>840</x>
+        <y>10</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Settings</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>32</width>
+        <height>32</height>
+       </size>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="LogViewTab">
      <attribute name="title">
