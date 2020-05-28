@@ -25,6 +25,7 @@ from matplotlib.figure import Figure
 
 #Other Dependencies
 import time
+from datetime import datetime
 import math
 
 #Database Credentials
@@ -197,6 +198,7 @@ class Main_Win(QMainWindow):
         self.LastTenTable.clearContents()
 
         #When adding one new movie, the refresh works fine. Anything more than that, the result from the first add is returned every time
+        #Removing ORDER BY and LIMIT does not fix the problem
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
         cursor = dbConnection.cursor()
         cursor.execute(sql)
@@ -366,19 +368,21 @@ class Main_Win(QMainWindow):
         self.LowestRatingLabel.setText('Lowest Rating: ' + str(lowestRated[0][0]) + '/10')
 
     def getYearsMovies(self, year):
-        #Gets all of the movies watched in a given year. Year should be all 4 digits
-        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log WHERE LOG_MOVIE_DATE >= 01/01/%s ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
-        vals = [year]
+        #Gets all of the movies watched in a given year (Movies logged between Jan 1st and Dec 31st). Year should be all 4 digits
+        sql = "SELECT LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS FROM log WHERE LOG_MOVIE_DATE BETWEEN %s AND %s ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
+        yearMin = year + '-01-01'
+        yearMax = year + '-12-31'
+        vals = [yearMin, yearMax]
         cursor = dbConnection.cursor()
         cursor.execute(sql,vals)
         myresult = cursor.fetchall()
         cursor.close()
         return myresult
 
-    def generateMoviesPerMonth(self):
-        #Generates graph to display how many movies are watched each month of the year
+    def generateMoviesPerMonth(self, year = str(datetime.today().year)):
+        #Generates graph to display how many movies are watched each month of the year. Year is optional and defaults to current year
         #Possibly make this dynamic so it can handle making a line chart or a bar chart
-        annualMovies = self.getYearsMovies('2019')
+        annualMovies = self.getYearsMovies(year)
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         counts = [0,0,0,0,0,0,0,0,0,0,0,0]
         for movie in annualMovies:
