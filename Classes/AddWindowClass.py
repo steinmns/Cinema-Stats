@@ -20,7 +20,6 @@ class AddForm_Win(QDialog):
         #Definitions for add form entry fields
         self.submitButton = self.findChild(QtWidgets.QPushButton, 'SubmitButton')
         self.submitButton.clicked.connect(self.insertMovie)
-        #self.submitButton.clicked.connect(self.printSubmission)
         self.cancelButton = self.findChild(QtWidgets.QPushButton, 'CancelEntryButton')
         self.cancelButton.clicked.connect(self.close)
 
@@ -101,5 +100,4 @@ class AddForm_Win(QDialog):
 
         return True #Indicates that the entry is good and can be inserted into the table
 
-        
         
