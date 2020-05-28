@@ -200,10 +200,10 @@ class Main_Win(QMainWindow):
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
         cursor = dbConnection.cursor()
         cursor.execute(sql)
-        myresult = cursor.fetchall()
+        newTen = cursor.fetchall()
         cursor.close()
 
-        for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
+        for row_number, row_data in enumerate(newTen):    #Adds data from select statement to the table
             for column_number, data in enumerate(row_data):
                 self.LastTenTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
                 
