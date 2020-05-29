@@ -4,14 +4,6 @@ from Classes.QToasterClass import QToaster
 from datetime import datetime
 import mysql.connector
 
-#Database Credentials
-dbConnection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="1234",
-    database="moviesheet"
-)
-
 class EditForm_Win(QDialog):
     def __init__(self, *args, **kwargs):
         super(EditForm_Win, self).__init__()    #*args and *kwargs removed from super init
@@ -50,21 +42,14 @@ class EditForm_Win(QDialog):
 
     def updateMovie(self):
         #Updates a movie entry
+        dbConnection2 = self.parentWin.dbConnection
         if self.validateSubmission() == True:
             sql = "UPDATE log SET LOG_MOVIE_TITLE = %s, LOG_MOVIE_DATE = %s, LOG_MOVIE_RATING = %s, LOG_MOVIE_GENRE = %s, LOG_MOVIE_LOCATION = %s, LOG_MOVIE_COMMENTS = %s WHERE LOG_ID = %s"
             vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.entryIdVal] 
-            cursor = dbConnection.cursor()
+            cursor = dbConnection2.cursor()
             cursor.execute(sql, vals)
-            dbConnection.commit()
+            dbConnection2.commit()
             cursor.close()
-            
-            #Updating Main Log Table
-            i = 1
-            vals.pop() #Removes the IDVal from the list so it doesn't interfere with updating the Main Log table -> ID should never be updated
-            for data in enumerate(vals):
-                self.parentWin.MainLogTable.setItem(self.curRow, i, QtWidgets.QTableWidgetItem(data[1]))
-                if(i < 6):
-                    i += 1
 
             QToaster.showMessage(self.parentWin, 'Entry Updated', corner=QtCore.Qt.BottomRightCorner)
             self.close()

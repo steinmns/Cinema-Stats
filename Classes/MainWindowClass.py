@@ -28,20 +28,11 @@ import time
 from datetime import datetime
 import math
 
-#Database Credentials
-dbConnection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="1234",
-    database="moviesheet"
-)
-
 #Necessary Functionality
 #TODO: Add another theme
 #TODO: Add more graphs
 
 #Bugs
-#TODO: Need recently logged app table to update 
 
 #Nice to Haves (Lower Priority)
 #TODO: Add dynamic scaling aka some sort of layout
@@ -54,6 +45,14 @@ class Main_Win(QMainWindow):
         #Constructor Method
         super(Main_Win, self).__init__()
         self.ui = uic.loadUi('UI Files/MainWindowV1.ui', self)   #Loads Main Menu Window
+
+        #Database Credentials
+        self.dbConnection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="1234",
+            database="moviesheet"
+        )
 
         #Tab Icons
         hometab_icon = qta.icon('mdi.home-outline')
@@ -123,8 +122,10 @@ class Main_Win(QMainWindow):
         if addForm.exec_():
             print("Success!")
         else:
-            self.refreshLastTen()
             print("Closing Add Form")
+            self.refreshLastTen()
+            self.refreshMainLog()
+            self.updateStats()
 
     def displaySettingsMenu(self):
         # Displays the Settings Menu when the SettingsButton is pressed
@@ -158,13 +159,16 @@ class Main_Win(QMainWindow):
                 print("Success!")
             else:
                 print("Closing Edit Window")
+                self.refreshLastTen()
+                self.refreshMainLog()
+                self.updateStats()
         else:
             QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
     def loadLastTenTable(self):
         #Loads table with last ten movies watched
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
@@ -186,7 +190,7 @@ class Main_Win(QMainWindow):
     def getAllMovies(self):
         #Returns all of the movies logged
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc"    #Selects all entries 
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
@@ -194,13 +198,11 @@ class Main_Win(QMainWindow):
 
     def refreshLastTen(self):
         #Refreshes the table of recently watched movies after a new entry is added or a change
-        print('Refreshing Last10 Table')
+        print('Refreshing Last10 Table') #For Debugging Purposes
         self.LastTenTable.clearContents()
 
-        #When adding one new movie, the refresh works fine. Anything more than that, the result from the first add is returned every time
-        #Removing ORDER BY and LIMIT does not fix the problem
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         newTen = cursor.fetchall()
         cursor.close()
@@ -209,15 +211,20 @@ class Main_Win(QMainWindow):
             for column_number, data in enumerate(row_data):
                 self.LastTenTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
                 
-
     def refreshMainLog(self):
         #Refreshes the table of watched movies after a new entry is added or a change
-        #while (self.MainLogTable.rowCount() > 0):
-            #self.MainLogTable.removeRow(0)
-
+        print('Refreshing MainLog Table') #For Debugging Purposes
         self.MainLogTable.clearContents()
 
-        #self.loadMainLogTable()
+        sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc" #Selects top 10 results from the table
+        cursor = self.dbConnection.cursor()
+        cursor.execute(sql)
+        newTen = cursor.fetchall()
+        cursor.close()
+
+        for row_number, row_data in enumerate(newTen):    #Adds data from select statement to the table
+            for column_number, data in enumerate(row_data):
+                self.MainLogTable.setItem(row_number, column_number,QtWidgets.QTableWidgetItem(str(data)))
 
     def loadMainLogTable(self):
         #Loads table with all movies logged
@@ -243,9 +250,9 @@ class Main_Win(QMainWindow):
             entryID = self.MainLogTable.item(self.MainLogTable.currentRow(), 0).text()
             sql = "DELETE FROM log WHERE LOG_ID = %s"
             vals = [entryID]
-            cursor = dbConnection.cursor()
+            cursor = self.dbConnection.cursor()
             cursor.execute(sql, vals)
-            dbConnection.commit()
+            self.dbConnection.commit()
             cursor.close()
 
             #Deleting from MainLogTable
@@ -258,7 +265,7 @@ class Main_Win(QMainWindow):
     def generateGenrePie(self):
         #Creates a pie chart of most watched genres
         sql = "SELECT LOG_MOVIE_GENRE FROM log"
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         genres = cursor.fetchall()
         cursor.close()
@@ -323,7 +330,7 @@ class Main_Win(QMainWindow):
     def getAllTimeMinRating(self):
         #Gets the Lowest Rating Logged
         sql = "SELECT MIN(LOG_MOVIE_RATING) FROM log"
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
@@ -332,7 +339,7 @@ class Main_Win(QMainWindow):
     def getAllTimeMaxRating(self):
         #Gets the Highest Rating Logged
         sql = "SELECT MAX(LOG_MOVIE_RATING) FROM log"
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
@@ -341,7 +348,7 @@ class Main_Win(QMainWindow):
     def getAllTimeAvgRating(self):
         #Gets the Average rating of all movies logged
         sql = "SELECT AVG(LOG_MOVIE_RATING) FROM log"
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
@@ -350,7 +357,7 @@ class Main_Win(QMainWindow):
     def getAllTimeCount(self):
         #Gets the Count of all movies logged
         sql = "SELECT COUNT(LOG_ID) FROM log"
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
@@ -373,7 +380,7 @@ class Main_Win(QMainWindow):
         yearMin = year + '-01-01'
         yearMax = year + '-12-31'
         vals = [yearMin, yearMax]
-        cursor = dbConnection.cursor()
+        cursor = self.dbConnection.cursor()
         cursor.execute(sql,vals)
         myresult = cursor.fetchall()
         cursor.close()

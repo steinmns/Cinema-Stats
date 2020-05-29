@@ -3,14 +3,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from Classes.QToasterClass import QToaster
 import mysql.connector
 
-#Database Credentials
-dbConnection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="1234",
-    database="moviesheet"
-)
-
 class AddForm_Win(QDialog):
     def __init__(self, *args, **kwargs):
         super(AddForm_Win, self).__init__(*args, **kwargs)
@@ -33,6 +25,8 @@ class AddForm_Win(QDialog):
         self.errorMessage = ""
         self.locationVal = ""
 
+        
+
     def printSubmission(self):
         print("In form validation")
         print("Title: " + self.titleVal.text())
@@ -49,23 +43,14 @@ class AddForm_Win(QDialog):
 
     def insertMovie(self):
         #Inserts a new movie to the movie list
+        dbConnection2 = self.parent().dbConnection
         if self.validateSubmission() == True:
             sql = "INSERT INTO log (LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS) VALUES (%s, %s, %s, %s, %s, %s)"
             vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText()] 
-            cursor = dbConnection.cursor()
+            cursor = dbConnection2.cursor()
             cursor.execute(sql, vals)
-            dbConnection.commit()
+            dbConnection2.commit()
             cursor.close()
-
-            #Inserting into Main Log Table
-            self.parent().MainLogTable.insertRow(self.parent().MainLogTable.rowCount()) #Using rowcount val since arrays start at 0 
-            i = 1
-            newRow = self.parent().MainLogTable.rowCount() - 1
-            vals.pop() #Removes the IDVal from the list so it doesn't interfere with updating the Main Log table -> ID should never be updated
-            for data in enumerate(vals):
-                self.parent().MainLogTable.setItem(newRow, i, QtWidgets.QTableWidgetItem(str(data[1])))
-                if(i < 6):
-                    i += 1
 
             QToaster.showMessage(self.parent(), 'Entry Added', corner=QtCore.Qt.BottomRightCorner)
             self.close()
