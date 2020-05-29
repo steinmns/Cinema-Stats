@@ -62,6 +62,10 @@ class EditForm_Win(QDialog):
             self.errorMessage = "Please Enter a Title"
             QToaster.showMessage(self.parentWin, self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
             return False
+        if len(self.titleVal.text()) >= 100:
+            self.errorMessage = "Title is too long" #Don't really love the way this is phrased, will probably revise this later
+            QToaster.showMessage(self.parent(), self.errorMessage, corner=QtCore.Qt.BottomRightCorner)
+            return False
         if self.dateVal.date().toString() == None:
             self.errorMessage = "Please Enter a Date"
             QToaster.showMessage(self.parentWin, self.errorMessage, corner=QtCore.Qt.BottomRightCorner)

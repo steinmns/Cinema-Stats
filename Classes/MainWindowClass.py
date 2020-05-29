@@ -259,6 +259,10 @@ class Main_Win(QMainWindow):
             self.MainLogTable.removeRow(self.MainLogTable.currentRow())
 
             QToaster.showMessage(self, 'Entry Deleted', corner=QtCore.Qt.BottomRightCorner)
+            
+            self.refreshLastTen()
+            self.refreshMainLog()
+            self.updateStats()
         else:
             QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
