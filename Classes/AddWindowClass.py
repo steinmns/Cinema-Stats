@@ -25,7 +25,7 @@ class AddForm_Win(QDialog):
         self.errorMessage = ""
         self.locationVal = ""
 
-        
+        self.parent().changed = False #Makes sure that change flag is false initially
 
     def printSubmission(self):
         print("In form validation")
@@ -53,6 +53,7 @@ class AddForm_Win(QDialog):
             cursor.close()
 
             QToaster.showMessage(self.parent(), 'Entry Added', corner=QtCore.Qt.BottomRightCorner)
+            self.parent().changed = True
             self.close()
         else:
             print("Error: " + self.errorMessage)
