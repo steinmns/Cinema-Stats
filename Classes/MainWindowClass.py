@@ -367,6 +367,80 @@ class Main_Win(QMainWindow):
         cursor.close()
         return myresult
 
+    def getAllTimeFavGenre(self):
+        #Gets the Genre with the highest average rating
+        #Drama 0 Romance 1 Documentary 2 Animated 3 Fantasy 4 Horror 5 Comedy 6 Thriller 7 Crime 8 Western 9 Adventure 10 Action 11 War 12 Biography 13 Sci-Fi 14 Musical 15
+        sql = "SELECT LOG_MOVIE_RATING, LOG_MOVIE_GENRE FROM log ORDER BY LOG_MOVIE_GENRE ASC"
+        cursor = self.dbConnection.cursor()
+        cursor.execute(sql)
+        myresult = cursor.fetchall()
+        cursor.close()
+        moviecount = self.getAllTimeCount()[0][0]
+        threshold = int(moviecount/10)
+        indexnumber = 0
+        counts = [[0,'Drama'],[0,'Romance'],[0,'Documentary'],[0,'Animated'],[0,'Fantasy'],[0,'Horror'],[0,'Comedy'],[0,'Thriller'],[0,'Crime'],[0,'Western'],[0,'Adventure'],[0,'Action'],[0,'War'],[0,'Biography'],[0,'Sci-Fi'],[0,'Musical']]
+        ratetotals = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        while indexnumber < moviecount:
+            if myresult[indexnumber][1] == 'Drama':
+                counts[0][0] += 1
+                ratetotals[0] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Romance':
+                counts[1][0] += 1
+                ratetotals[1] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Documentary':
+                counts[2][0] += 1
+                ratetotals[2] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Animated':
+                counts[3][0] += 1
+                ratetotals[3] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Fantasy':
+                counts[4][0] += 1
+                ratetotals[4] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Horror':
+                counts[5][0] += 1
+                ratetotals[5] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Comedy':
+                counts[6][0] += 1
+                ratetotals[6] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Thriller':
+                counts[7][0] += 1
+                ratetotals[7] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Crime':
+                counts[8][0] += 1
+                ratetotals[8] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Western':
+                counts[9][0] += 1
+                ratetotals[9] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Adventure':
+                counts[10][0] += 1
+                ratetotals[10] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Action':
+                counts[11][0] += 1
+                ratetotals[11] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'War':
+                counts[12][0] += 1
+                ratetotals[12] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Biography':
+                counts[13][0] += 1
+                ratetotals[13] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Sci-Fi':
+                counts[14][0] += 1
+                ratetotals[14] += myresult[indexnumber][0]
+            elif myresult[indexnumber][1] == 'Musical':
+                counts[15][0] += 1
+                ratetotals[15] += myresult[indexnumber][0]
+            indexnumber += 1
+        avgbyGenre = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        countnumber = 0
+        while countnumber < len(counts):
+            if counts[countnumber][0] == 0:
+               avgbyGenre[countnumber] = 0
+            else:
+                avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
+            countnumber += 1
+        favGenreMax = max(avgbyGenre)
+        favGenreIndex = avgbyGenre.index(favGenreMax)       
+
     def updateStats(self):
         #Gets the main page stats and displays them
         moviesWatched = self.getAllTimeCount()
@@ -377,6 +451,7 @@ class Main_Win(QMainWindow):
         self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10') #Make this have one or two decimal points eventually
         self.HighestRatingLabel.setText('Highest Rating: ' + str(highestRated[0][0]) + '/10')
         self.LowestRatingLabel.setText('Lowest Rating: ' + str(lowestRated[0][0]) + '/10')
+        self.getAllTimeFavGenre()
 
     def getYearsMovies(self, year):
         #Gets all of the movies watched in a given year (Movies logged between Jan 1st and Dec 31st). Year should be all 4 digits
