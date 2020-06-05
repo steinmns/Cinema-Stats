@@ -273,9 +273,12 @@ class Main_Win(QMainWindow):
 
             QToaster.showMessage(self, 'Entry Deleted', corner=QtCore.Qt.BottomRightCorner)
             
-            self.refreshLastTen()
-            self.refreshMainLog()
-            self.updateStats()
+            entriesCount = self.getAllTimeCount()   #Probably could make this a one liner, but not sure how yet
+            if(entriesCount[0][0] != 0):
+                self.updateStats()
+                self.refreshLastTen()
+                self.refreshMainLog()
+            
         else:
             QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
