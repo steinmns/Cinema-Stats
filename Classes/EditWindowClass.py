@@ -40,6 +40,8 @@ class EditForm_Win(QDialog):
         elif(self.locationVal == 'Theater'):
             self.theaterChecked.setChecked(True)
 
+        self.parent().changed = False #Makes sure that change flag is false initially
+
     def updateMovie(self):
         #Updates a movie entry
         dbConnection2 = self.parentWin.dbConnection
@@ -52,6 +54,7 @@ class EditForm_Win(QDialog):
             cursor.close()
 
             QToaster.showMessage(self.parentWin, 'Entry Updated', corner=QtCore.Qt.BottomRightCorner)
+            self.parent().changed = True
             self.close()
         else:
             print("Error: " + self.errorMessage)

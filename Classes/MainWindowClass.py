@@ -116,6 +116,9 @@ class Main_Win(QMainWindow):
         layoutMPM.addWidget(dynCanvasMPM)
         self.dynAxMPM = dynCanvasMPM.figure.subplots()
 
+        #Update Flag
+        self.changed = False
+
     def startup(self):
         #Methods that need to run right when the UI opens
         self.loadLastTenTable()
@@ -131,9 +134,10 @@ class Main_Win(QMainWindow):
             print("Success!")
         else:
             print("Closing Add Form")
-            self.refreshLastTen()
-            self.refreshMainLog()
-            self.updateStats()
+            if(self.changed == True):   #Only updates if an entry has actually been added
+                self.refreshLastTen()
+                self.refreshMainLog()
+                self.updateStats()
 
     def displaySettingsMenu(self):
         # Displays the Settings Menu when the SettingsButton is pressed
@@ -167,9 +171,10 @@ class Main_Win(QMainWindow):
                 print("Success!")
             else:
                 print("Closing Edit Window")
-                self.refreshLastTen()
-                self.refreshMainLog()
-                self.updateStats()
+                if(self.changed == True):   #Only updates if an entry has actually been edited
+                    self.refreshLastTen()
+                    self.refreshMainLog()
+                    self.updateStats()
         else:
             QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
@@ -206,7 +211,7 @@ class Main_Win(QMainWindow):
 
     def refreshLastTen(self):
         #Refreshes the table of recently watched movies after a new entry is added or a change
-        print('Refreshing Last10 Table') #For Debugging Purposes
+        #print('Refreshing Last10 Table') #For Debugging Purposes
         self.LastTenTable.clearContents()
 
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
@@ -221,7 +226,7 @@ class Main_Win(QMainWindow):
                 
     def refreshMainLog(self):
         #Refreshes the table of watched movies after a new entry is added or a change
-        print('Refreshing MainLog Table') #For Debugging Purposes
+        #print('Refreshing MainLog Table') #For Debugging Purposes
         self.MainLogTable.clearContents()
 
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc" #Selects top 10 results from the table
