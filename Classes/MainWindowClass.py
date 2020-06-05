@@ -17,6 +17,7 @@ import mysql.connector
 
 #Graphing Dependencies
 import matplotlib
+matplotlib.rcParams.update({'figure.autolayout': True}) #Fixes Graph Scaling issues --> replaces plt.tight_layout()
 matplotlib.use('QT5Agg')
 import matplotlib.pyplot as plt
 import numpy as np
@@ -105,8 +106,15 @@ class Main_Win(QMainWindow):
         matplotlib.style.use(appSettings[0][2])
 
         #Graph Generation
-        self.generateMoviesPerMonth()
-        self.generateGenrePie()  
+        layoutGP = QtWidgets.QVBoxLayout(self.GenrePiePlaceholder) 
+        dynCanvasGP = FigureCanvas(Figure())
+        layoutGP.addWidget(dynCanvasGP)
+        self.dynAxGP = dynCanvasGP.figure.subplots()
+
+        layoutMPM = QtWidgets.QVBoxLayout(self.TotalsGraphPlaceholder) 
+        dynCanvasMPM = FigureCanvas(Figure())
+        layoutMPM.addWidget(dynCanvasMPM)
+        self.dynAxMPM = dynCanvasMPM.figure.subplots()
 
     def startup(self):
         #Methods that need to run right when the UI opens
@@ -266,8 +274,9 @@ class Main_Win(QMainWindow):
         else:
             QToaster.showMessage(self, 'Please Select a Row', corner=QtCore.Qt.BottomRightCorner)
 
-    def generateGenrePie(self):
+    def updateGPGraph(self):
         #Creates a pie chart of most watched genres
+        self.dynAxGP.clear()
         sql = "SELECT LOG_MOVIE_GENRE FROM log"
         cursor = self.dbConnection.cursor()
         cursor.execute(sql)
@@ -320,17 +329,9 @@ class Main_Win(QMainWindow):
         counts.remove(0)
         genreLabels.remove("")
 
-        #graphColors = ['forestgreen', 'slategrey', 'tan', 'darkorchid', 'yellowgreen', 'coral', 'slateblue', 'khaki', 'plum', 'sienna', 'olivedrab', 'seagreen']
-        fig1, ax1 = plt.subplots()
-        ax1.pie(counts, explode=None, labels=genreLabels, startangle=90)
-        ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        #ax1.set_prop_cycle(color=graphColors)
-        
-        plotWidget = FigureCanvas(fig1)
-        lay = QtWidgets.QVBoxLayout(self.GenrePiePlaceholder)  
-        lay.setContentsMargins(0, 0, 0, 0)      
-        lay.addWidget(plotWidget)
-        
+        self.dynAxGP.pie(counts, explode=None, labels=genreLabels, startangle=90)
+        self.dynAxGP.figure.canvas.draw()
+   
     def getAllTimeMinRating(self):
         #Gets the Lowest Rating Logged
         sql = "SELECT MIN(LOG_MOVIE_RATING) FROM log"
@@ -373,6 +374,8 @@ class Main_Win(QMainWindow):
         averageRating = self.getAllTimeAvgRating()
         highestRated = self.getAllTimeMaxRating()
         lowestRated = self.getAllTimeMinRating()
+        self.updateMPMGraph()
+        self.updateGPGraph()
         self.MoviesWatchedLabel.setText('Movies Watched: ' + str(moviesWatched[0][0])) 
         self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10') #Make this have one or two decimal points eventually
         self.HighestRatingLabel.setText('Highest Rating: ' + str(highestRated[0][0]) + '/10')
@@ -390,9 +393,9 @@ class Main_Win(QMainWindow):
         cursor.close()
         return myresult
 
-    def generateMoviesPerMonth(self, year = str(datetime.today().year)):
+    def updateMPMGraph(self, year = str(datetime.today().year)):
         #Generates graph to display how many movies are watched each month of the year. Year is optional and defaults to current year
-        #Possibly make this dynamic so it can handle making a line chart or a bar chart
+        self.dynAxMPM.clear()
         annualMovies = self.getYearsMovies(year)
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         counts = [0,0,0,0,0,0,0,0,0,0,0,0]
@@ -422,18 +425,10 @@ class Main_Win(QMainWindow):
             elif movie[1].month == 12:
                 counts[11] += 1
 
-        fig, ax = plt.subplots()
-        ax.plot(months, counts)
-        ax.set(xlabel='Month', ylabel='Movies Watched', title='Movies Per Month')
-        ax.grid()
-        yRange = range(min(counts), math.ceil(max(counts))+1)   #Averages counts values for axis labels and prevents decimal values
-        plt.yticks(yRange)
-        plt.xticks(months, rotation='vertical')
-        plt.tight_layout()  #Mostly Fixes labels being cutoff
-
-        plotWidget = FigureCanvas(fig)
-        lay = QtWidgets.QVBoxLayout(self.TotalsGraphPlaceholder)  
-        lay.setContentsMargins(0, 0, 0, 0) 
-        lay.addWidget(plotWidget)
-        
-        
+        self.dynAxMPM.set(xlabel='Month', ylabel='Movies Watched', title='Movies Per Month')
+        self.dynAxMPM.plot(months, counts)
+        self.dynAxMPM.grid(True)
+        yRange = range(min(counts), math.ceil(max(counts))+1)       #Averages counts values for axis labels and prevents decimal values
+        self.dynAxMPM.set_yticks(yRange)
+        self.dynAxMPM.set_xticklabels(months, rotation='vertical')  #Makes tick labels vertical to save space
+        self.dynAxMPM.figure.canvas.draw()                          #Refreshes Canvas
