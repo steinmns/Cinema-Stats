@@ -444,9 +444,10 @@ class Main_Win(QMainWindow):
         if moviecount > 25:
             while countnumber < len(counts):
                 if counts[countnumber][0] < threshold:
-                    del counts[countnumber]
+                    avgbyGenre[countnumber] = 0
                 else:
                     avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
+                countnumber += 1
         else:
             while countnumber < len(counts):
                 if counts[countnumber][0] == 0:
