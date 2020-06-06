@@ -194,6 +194,25 @@
        </size>
       </property>
      </widget>
+     <widget class="QLabel" name="FavoriteGenreLabel">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>550</y>
+        <width>171</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Mollen Personal Use</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Favorite Genre:</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="LogViewTab">
      <attribute name="title">

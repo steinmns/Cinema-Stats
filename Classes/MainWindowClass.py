@@ -438,14 +438,22 @@ class Main_Win(QMainWindow):
             indexnumber += 1
         avgbyGenre = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         countnumber = 0
-        while countnumber < len(counts):
-            if counts[countnumber][0] == 0:
-               avgbyGenre[countnumber] = 0
-            else:
-                avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
-            countnumber += 1
+        if moviecount > 25:
+            while countnumber < len(counts):
+                if counts[countnumber][0] < threshold:
+                    del counts[countnumber]
+                else:
+                    avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
+        else:
+            while countnumber < len(counts):
+                if counts[countnumber][0] == 0:
+                    avgbyGenre[countnumber] = 0
+                else:
+                    avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
+                countnumber += 1
         favGenreMax = max(avgbyGenre)
-        favGenreIndex = avgbyGenre.index(favGenreMax)       
+        favGenreIndex = avgbyGenre.index(favGenreMax) 
+        return(counts[favGenreIndex][1])    
 
     def updateStats(self):
         #Gets the main page stats and displays them
@@ -453,13 +461,14 @@ class Main_Win(QMainWindow):
         averageRating = self.getAllTimeAvgRating()
         highestRated = self.getAllTimeMaxRating()
         lowestRated = self.getAllTimeMinRating()
+        favoriteGenre = self.getAllTimeFavGenre()
         self.updateMPMGraph()
         self.updateGPGraph()
         self.MoviesWatchedLabel.setText('Movies Watched: ' + str(moviesWatched[0][0])) 
         self.AverageRatingLabel.setText('Average Rating: ' + str(int(averageRating[0][0])) + '/10') #Make this have one or two decimal points eventually
         self.HighestRatingLabel.setText('Highest Rating: ' + str(highestRated[0][0]) + '/10')
         self.LowestRatingLabel.setText('Lowest Rating: ' + str(lowestRated[0][0]) + '/10')
-        self.getAllTimeFavGenre()
+        self.FavoriteGenreLabel.setText('Favorite Genre: ' + str(favoriteGenre))
 
     def getYearsMovies(self, year):
         #Gets all of the movies watched in a given year (Movies logged between Jan 1st and Dec 31st). Year should be all 4 digits
