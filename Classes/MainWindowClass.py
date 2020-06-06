@@ -524,3 +524,5 @@ class Main_Win(QMainWindow):
         self.dynAxMPM.set_yticks(yRange)
         self.dynAxMPM.set_xticklabels(months, rotation='vertical')  #Makes tick labels vertical to save space
         self.dynAxMPM.figure.canvas.draw()                          #Refreshes Canvas
+
+        #Branching Test
