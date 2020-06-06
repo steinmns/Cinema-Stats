@@ -40,7 +40,7 @@ class EditForm_Win(QDialog):
         elif(self.locationVal == 'Theater'):
             self.theaterChecked.setChecked(True)
 
-        self.parent().changed = False #Makes sure that change flag is false initially
+        self.parentWin.changed = False #Makes sure that change flag is false initially
 
     def updateMovie(self):
         #Updates a movie entry
