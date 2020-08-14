@@ -165,8 +165,9 @@ class Main_Win(QMainWindow):
             genre = self.MainLogTable.item(self.MainLogTable.currentRow(), 4).text()
             location = self.MainLogTable.item(self.MainLogTable.currentRow(), 5).text()
             comments = self.MainLogTable.item(self.MainLogTable.currentRow(), 6).text()
+            rewatch = self.MainLogTable.item(self.MainLogTable.currentRow(), 7).text()
             
-            editWin = EditForm_Win(self, entryID, title, date, rating, genre, location, comments, self.MainLogTable.currentRow())
+            editWin = EditForm_Win(self, entryID, title, date, rating, genre, location, comments, rewatch, self.MainLogTable.currentRow())
             if editWin.exec_():
                 print("Success!")
             else:
@@ -185,8 +186,8 @@ class Main_Win(QMainWindow):
         cursor.execute(sql)
         myresult = cursor.fetchall()
         cursor.close()
-        header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments"]
-        self.LastTenTable.setColumnCount(7) #Sets column count to 7
+        header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments", "Rewatch"]
+        self.LastTenTable.setColumnCount(8) #Sets column count to 7
         self.LastTenTable.setColumnHidden(0, True)
         self.LastTenTable.setColumnWidth(1, 220)
         self.LastTenTable.setColumnWidth(2, 75)
@@ -194,6 +195,7 @@ class Main_Win(QMainWindow):
         self.LastTenTable.setColumnWidth(4, 90)
         self.LastTenTable.setColumnWidth(5, 65)
         self.LastTenTable.setColumnWidth(6, 307)
+        self.LastTenTable.setColumnWidth(7, 60.5)
         self.LastTenTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(myresult):    #Adds data from select statement to the table
             self.LastTenTable.insertRow(row_number)
@@ -242,8 +244,8 @@ class Main_Win(QMainWindow):
     def loadMainLogTable(self):
         #Loads table with all movies logged
         movies = self.getAllMovies()
-        header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments"]
-        self.MainLogTable.setColumnCount(7) #Sets column count to 7
+        header = ["ID","Title", "Date", "Rating", "Genre", "Location", "Comments", "Rewatch"]
+        self.MainLogTable.setColumnCount(8) #Sets column count to 8
         self.MainLogTable.setColumnHidden(0, True)  #Hides ID column because it clutters the table in the UI -> used exclusively for edit and delete operations
         self.MainLogTable.setColumnWidth(1, 220)
         self.MainLogTable.setColumnWidth(2, 75)
@@ -251,6 +253,7 @@ class Main_Win(QMainWindow):
         self.MainLogTable.setColumnWidth(4, 90)
         self.MainLogTable.setColumnWidth(5, 65)
         self.MainLogTable.setColumnWidth(6, 307)
+        self.MainLogTable.setColumnWidth(7, 63)
         self.MainLogTable.setHorizontalHeaderLabels(header) #Sets Column headings
         for row_number, row_data in enumerate(movies):    #Adds data from select statement to the table
             self.MainLogTable.insertRow(row_number)
