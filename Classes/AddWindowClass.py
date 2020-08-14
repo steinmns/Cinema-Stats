@@ -22,6 +22,9 @@ class AddForm_Win(QDialog):
         self.theaterChecked = self.findChild(QtWidgets.QRadioButton, 'MovieLocationTheaterEntry')
         self.homeChecked = self.findChild(QtWidgets.QRadioButton, 'MovieLocationHomeEntry')
         self.commentVal = self.findChild(QtWidgets.QPlainTextEdit, 'MovieCommentsEntry')
+        self.rewatchYesChecked = self.findChild(QtWidgets.QRadioButton, 'MovieRewatchEntryYes')
+        self.rewatchNoChecked = self.findChild(QtWidgets.QRadioButton, 'MovieRewatchEntryNo')
+        self.rewatchVal = ""
         self.errorMessage = ""
         self.locationVal = ""
 
@@ -45,8 +48,8 @@ class AddForm_Win(QDialog):
         #Inserts a new movie to the movie list
         dbConnection2 = self.parent().dbConnection
         if self.validateSubmission() == True:
-            sql = "INSERT INTO log (LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS) VALUES (%s, %s, %s, %s, %s, %s)"
-            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText()] 
+            sql = "INSERT INTO log (LOG_MOVIE_TITLE, LOG_MOVIE_DATE, LOG_MOVIE_RATING, LOG_MOVIE_GENRE, LOG_MOVIE_LOCATION, LOG_MOVIE_COMMENTS, LOG_MOVIE_REWATCH) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.rewatchVal] 
             cursor = dbConnection2.cursor()
             cursor.execute(sql, vals)
             dbConnection2.commit()
@@ -87,6 +90,13 @@ class AddForm_Win(QDialog):
             self.locationVal = "Home"
         else:
             self.locationVal = None
+
+        if(self.rewatchYesChecked.isChecked() == True):
+            self.rewatchVal = 'Yes'
+        elif(self.rewatchNoChecked.isChecked() == True):
+            self.rewatchVal = 'No'
+        else:
+            self.rewatchVal = None
 
         return True #Indicates that the entry is good and can be inserted into the table
 

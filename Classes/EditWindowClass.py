@@ -22,6 +22,9 @@ class EditForm_Win(QDialog):
         self.theaterChecked = self.findChild(QtWidgets.QRadioButton, 'MovieLocationTheaterEntry')
         self.homeChecked = self.findChild(QtWidgets.QRadioButton, 'MovieLocationHomeEntry')
         self.commentVal = self.findChild(QtWidgets.QPlainTextEdit, 'MovieCommentsEntry')
+        self.rewatchYesChecked = self.findChild(QtWidgets.QRadioButton, 'MovieRewatchEntryYes')
+        self.rewatchNoChecked = self.findChild(QtWidgets.QRadioButton, 'MovieRewatchEntryNo')
+        self.rewatchVal = ""
         self.errorMessage = ""
         self.locationVal = ""
 
@@ -34,11 +37,18 @@ class EditForm_Win(QDialog):
         self.genreVal.setCurrentText(args[5])
         self.locationVal = args[6]
         self.commentVal.setPlainText(args[7])
-        self.curRow = args[8]
+        self.rewatchVal = args[8]
+        self.curRow = args[9]
+
         if(self.locationVal == 'Home'):
             self.homeChecked.setChecked(True)
         elif(self.locationVal == 'Theater'):
             self.theaterChecked.setChecked(True)
+
+        if(self.rewatchVal == 'Yes'):
+            self.rewatchYesChecked.setChecked(True)
+        elif(self.rewatchVal == 'No'):
+            self.rewatchNoChecked.setChecked(True)
 
         self.parentWin.changed = False #Makes sure that change flag is false initially
 
@@ -46,15 +56,15 @@ class EditForm_Win(QDialog):
         #Updates a movie entry
         dbConnection2 = self.parentWin.dbConnection
         if self.validateSubmission() == True:
-            sql = "UPDATE log SET LOG_MOVIE_TITLE = %s, LOG_MOVIE_DATE = %s, LOG_MOVIE_RATING = %s, LOG_MOVIE_GENRE = %s, LOG_MOVIE_LOCATION = %s, LOG_MOVIE_COMMENTS = %s WHERE LOG_ID = %s"
-            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.entryIdVal] 
+            sql = "UPDATE log SET LOG_MOVIE_TITLE = %s, LOG_MOVIE_DATE = %s, LOG_MOVIE_RATING = %s, LOG_MOVIE_GENRE = %s, LOG_MOVIE_LOCATION = %s, LOG_MOVIE_COMMENTS = %s, LOG_MOVIE_REWATCH = %s WHERE LOG_ID = %s"
+            vals = [self.titleVal.text(), self.dateVal.date().toString('yyyy-MM-dd'), self.ratingVal.currentText(), self.genreVal.currentText(), self.locationVal, self.commentVal.toPlainText(), self.rewatchVal, self.entryIdVal] 
             cursor = dbConnection2.cursor()
             cursor.execute(sql, vals)
             dbConnection2.commit()
             cursor.close()
 
             QToaster.showMessage(self.parentWin, 'Entry Updated', corner=QtCore.Qt.BottomRightCorner)
-            self.parent().changed = True
+            self.parentWin.changed = True
             self.close()
         else:
             print("Error: " + self.errorMessage)
@@ -88,6 +98,13 @@ class EditForm_Win(QDialog):
             self.locationVal = "Home"
         else:
             self.locationVal = None
+
+        if self.rewatchYesChecked.isChecked() == True:
+            self.rewatchVal = 'Yes'
+        elif self.rewatchNoChecked.isChecked() == True:
+            self.rewatchVal = 'No'
+        else:
+            self.rewatchVal = 'No'
 
         return True 
 
