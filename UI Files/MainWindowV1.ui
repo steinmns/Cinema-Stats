@@ -10,6 +10,12 @@
     <height>781</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1173</width>
+    <height>781</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Cinema Stats V1.0</string>
   </property>
