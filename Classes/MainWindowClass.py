@@ -28,17 +28,7 @@ from matplotlib.figure import Figure
 import time
 from datetime import datetime
 import math
-
-#Necessary Functionality
-#TODO: Add another theme
-#TODO: Add more graphs
-
-#Bugs
-
-#Nice to Haves (Lower Priority)
-#TODO: Add dynamic scaling aka some sort of layout
-#TODO: Adhere to a variable/class naming protocol and generally organize code further
-#TODO: Add more powerful features into the settings page (delete all data, load test data set)
+import calendar
 
 class Main_Win(QMainWindow):
     
@@ -213,7 +203,6 @@ class Main_Win(QMainWindow):
 
     def refreshLastTen(self):
         #Refreshes the table of recently watched movies after a new entry is added or a change
-        #print('Refreshing Last10 Table') #For Debugging Purposes
         self.LastTenTable.clearContents()
 
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc LIMIT 0, 10" #Selects top 10 results from the table
@@ -228,7 +217,6 @@ class Main_Win(QMainWindow):
                 
     def refreshMainLog(self):
         #Refreshes the table of watched movies after a new entry is added or a change
-        #print('Refreshing MainLog Table') #For Debugging Purposes
         self.MainLogTable.clearContents()
 
         sql = "SELECT * FROM log ORDER BY LOG_MOVIE_DATE desc" #Selects top 10 results from the table
@@ -293,54 +281,17 @@ class Main_Win(QMainWindow):
         cursor.execute(sql)
         genres = cursor.fetchall()
         cursor.close()
-        counts = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        genreLabels = ['Drama', 'Romance', 'Documentary', 'Animated', 'Fantasy', 'Horror', 'Comedy', 'Thriller', 'Crime', 'Western', 'Adventure', 'Action', 'War', 'Biography', 'Sci-Fi', 'Musical']
+        genreDict = {'Drama':0, 'Romance':0, 'Documentary':0, 'Animated':0, 'Fantasy':0, 'Horror':0, 'Comedy':0, 'Thriller':0, 'Crime':0,
+         'Western':0, 'Adventure':0, 'Action':0, 'War':0, 'Biography':0, 'Sci-Fi':0, 'Musical':0}
         for row_data in enumerate(genres):
-            if row_data[1][0] == 'Drama':
-                counts[0] += 1
-            elif row_data[1][0] == 'Romance':
-                counts[1] += 1
-            elif row_data[1][0] == 'Documentary':
-                counts[2] += 1
-            elif row_data[1][0] == 'Animated':
-                counts[3] += 1
-            elif row_data[1][0] == 'Fantasy':
-                counts[4] += 1
-            elif row_data[1][0] == 'Horror':
-                counts[5] += 1
-            elif row_data[1][0] == 'Comedy':
-                counts[6] += 1
-            elif row_data[1][0] == 'Thriller':
-                counts[7] += 1
-            elif row_data[1][0] == 'Crime':
-                counts[8] += 1
-            elif row_data[1][0] == 'Western':
-                counts[9] += 1
-            elif row_data[1][0] == 'Adventure':
-                counts[10] += 1
-            elif row_data[1][0] == 'Action':
-                counts[11] += 1
-            elif row_data[1][0] == 'War':
-                counts[12] += 1
-            elif row_data[1][0] == 'Biography':
-                counts[13] += 1
-            elif row_data[1][0] == 'Sci-Fi':
-                counts[14] += 1
-            elif row_data[1][0] == 'Musical':
-                counts[15] += 1
+            if row_data[1][0] in genreDict:
+                genreDict[row_data[1][0]] +=1
             else:
                 print('Bad genre data: ' + str(row_data[1]))
 
-        #Don't judge me for this -> this should remove the entries that have a count of zero so that they don't clutter the pie chart
-        length = len(counts)
-        for i in range(length):
-            if(counts[i] == 0):
-                genreLabels[i] = ""
+        genreDict = {key:val for key,val in genreDict.items() if val!=0}
 
-        counts.remove(0)
-        genreLabels.remove("")
-
-        self.dynAxGP.pie(counts, explode=None, labels=genreLabels, startangle=90)
+        self.dynAxGP.pie(genreDict.values(), explode=None, labels=genreDict.keys(), startangle=90)
         self.dynAxGP.figure.canvas.draw()
    
     def getAllTimeMinRating(self):
@@ -385,82 +336,40 @@ class Main_Win(QMainWindow):
         sql = "SELECT LOG_MOVIE_RATING, LOG_MOVIE_GENRE FROM log ORDER BY LOG_MOVIE_GENRE ASC"
         cursor = self.dbConnection.cursor()
         cursor.execute(sql)
-        myresult = cursor.fetchall()
+        movies = cursor.fetchall()
         cursor.close()
-        moviecount = self.getAllTimeCount()[0][0]
-        threshold = int(moviecount/10)
-        indexnumber = 0
-        counts = [[0,'Drama'],[0,'Romance'],[0,'Documentary'],[0,'Animated'],[0,'Fantasy'],[0,'Horror'],[0,'Comedy'],[0,'Thriller'],[0,'Crime'],[0,'Western'],[0,'Adventure'],[0,'Action'],[0,'War'],[0,'Biography'],[0,'Sci-Fi'],[0,'Musical']]
-        ratetotals = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        while indexnumber < moviecount:
-            if myresult[indexnumber][1] == 'Drama':
-                counts[0][0] += 1
-                ratetotals[0] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Romance':
-                counts[1][0] += 1
-                ratetotals[1] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Documentary':
-                counts[2][0] += 1
-                ratetotals[2] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Animated':
-                counts[3][0] += 1
-                ratetotals[3] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Fantasy':
-                counts[4][0] += 1
-                ratetotals[4] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Horror':
-                counts[5][0] += 1
-                ratetotals[5] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Comedy':
-                counts[6][0] += 1
-                ratetotals[6] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Thriller':
-                counts[7][0] += 1
-                ratetotals[7] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Crime':
-                counts[8][0] += 1
-                ratetotals[8] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Western':
-                counts[9][0] += 1
-                ratetotals[9] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Adventure':
-                counts[10][0] += 1
-                ratetotals[10] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Action':
-                counts[11][0] += 1
-                ratetotals[11] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'War':
-                counts[12][0] += 1
-                ratetotals[12] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Biography':
-                counts[13][0] += 1
-                ratetotals[13] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Sci-Fi':
-                counts[14][0] += 1
-                ratetotals[14] += myresult[indexnumber][0]
-            elif myresult[indexnumber][1] == 'Musical':
-                counts[15][0] += 1
-                ratetotals[15] += myresult[indexnumber][0]
-            indexnumber += 1
-        avgbyGenre = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        countnumber = 0
-        if moviecount > 25:
-            while countnumber < len(counts):
-                if counts[countnumber][0] < threshold:
-                    avgbyGenre[countnumber] = 0
+        threshold = int(len(movies)/10)
+        genreCounts = {'Drama':0, 'Romance':0, 'Documentary':0, 'Animated':0, 'Fantasy':0, 'Horror':0, 'Comedy':0, 'Thriller':0, 'Crime':0,
+         'Western':0, 'Adventure':0, 'Action':0, 'War':0, 'Biography':0, 'Sci-Fi':0, 'Musical':0}
+        genreTotals = {'Drama':0, 'Romance':0, 'Documentary':0, 'Animated':0, 'Fantasy':0, 'Horror':0, 'Comedy':0, 'Thriller':0, 'Crime':0,
+         'Western':0, 'Adventure':0, 'Action':0, 'War':0, 'Biography':0, 'Sci-Fi':0, 'Musical':0}
+        for movie in movies:
+            if movie[1] in genreCounts:
+                genreCounts[movie[1]] +=1
+                genreTotals[movie[1]] += movie[0]
+      
+        avgbyGenre = {'Drama':0, 'Romance':0, 'Documentary':0, 'Animated':0, 'Fantasy':0, 'Horror':0, 'Comedy':0, 'Thriller':0, 'Crime':0,
+         'Western':0, 'Adventure':0, 'Action':0, 'War':0, 'Biography':0, 'Sci-Fi':0, 'Musical':0}
+
+        if len(movies) > 25:
+            for genre in genreCounts.items():
+                if genre[1] < threshold:
+                    avgbyGenre[genre[0]] = 0
                 else:
-                    avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
-                countnumber += 1
+                    avgbyGenre[genre[0]] = (genreTotals[genre[0]] / genre[1])   
         else:
-            while countnumber < len(counts):
-                if counts[countnumber][0] == 0:
-                    avgbyGenre[countnumber] = 0
+            for genre in genreCounts.items():
+                if genre[1] == 0:
+                    avgbyGenre[genre[0]] = 0
                 else:
-                    avgbyGenre[countnumber] = (ratetotals[countnumber] / counts[countnumber][0])
-                countnumber += 1
-        favGenreMax = max(avgbyGenre)
-        favGenreIndex = avgbyGenre.index(favGenreMax) 
-        return(counts[favGenreIndex][1])    
+                    avgbyGenre[genre[0]] = (genreTotals[genre[0]] / genre[1])
+
+        avgByGenre = list(avgbyGenre.items())
+        oldMax = ['',0] 
+        for avg in avgByGenre:
+            if(avg[1] > oldMax[1]):
+                oldMax = avg
+        return(oldMax[0])    
 
     def updateStats(self):
         #Gets the main page stats and displays them
@@ -493,34 +402,14 @@ class Main_Win(QMainWindow):
         #Generates graph to display how many movies are watched each month of the year. Year is optional and defaults to current year
         self.dynAxMPM.clear()
         annualMovies = self.getYearsMovies(year)
-        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        counts = [0,0,0,0,0,0,0,0,0,0,0,0]
-        for movie in annualMovies:
-            if movie[1].month == 1:
-                counts[0] += 1
-            elif movie[1].month == 2:
-                counts[1] += 1
-            elif movie[1].month == 3:
-                counts[2] += 1
-            elif movie[1].month == 4:
-                counts[3] += 1
-            elif movie[1].month == 5:
-                counts[4] += 1
-            elif movie[1].month == 6:
-                counts[5] += 1
-            elif movie[1].month == 7:
-                counts[6] += 1
-            elif movie[1].month == 8:
-                counts[7] += 1
-            elif movie[1].month == 9:
-                counts[8] += 1
-            elif movie[1].month == 10:
-                counts[9] += 1
-            elif movie[1].month == 11:
-                counts[10] += 1
-            elif movie[1].month == 12:
-                counts[11] += 1
+        monthDict = {'January':0, 'February':0, 'March':0,'April':0,'May':0,'June':0,'July':0,'August':0,
+        'September':0,'October':0,'November':0,'December':0}
 
+        for movie in annualMovies:
+            monthDict[calendar.month_name[movie[1].month]] += 1
+
+        counts = list(monthDict.values())   #Converting to a list makes this hashable so the plot can work
+        months = list(monthDict.keys())
         self.dynAxMPM.set(xlabel='Month', ylabel='Movies Watched', title='Movies Per Month')
         self.dynAxMPM.plot(months, counts)
         self.dynAxMPM.grid(True)
@@ -528,5 +417,3 @@ class Main_Win(QMainWindow):
         self.dynAxMPM.set_yticks(yRange)
         self.dynAxMPM.set_xticklabels(months, rotation='vertical')  #Makes tick labels vertical to save space
         self.dynAxMPM.figure.canvas.draw()                          #Refreshes Canvas
-
-        #Branching Test
