@@ -12,16 +12,9 @@ class QToaster(QtWidgets.QFrame):
         self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, 
                            QtWidgets.QSizePolicy.Maximum)
 
-        self.setStyleSheet('''
-            QToaster {
-                border: 1px solid black;
-                border-radius: 4px; 
-                background: palette(window);
-            }
-        ''')
-        # alternatively:
-        # self.setAutoFillBackground(True)
-        # self.setFrameShape(self.Box)
+     
+        self.setAutoFillBackground(True)
+        self.setFrameShape(self.Box)
 
         self.timer = QtCore.QTimer(singleShot=True, timeout=self.hide)
 
@@ -116,26 +109,3 @@ class QToaster(QtWidgets.QFrame):
             geo.moveBottomLeft(
                 parent.rect().bottomLeft() + QtCore.QPoint(margin, -margin))
         self.setGeometry(geo)
-
-
-#class W(QtWidgets.QWidget):
-    #def __init__(self):
-        #QtWidgets.QWidget.__init__(self)
-        #layout = QtWidgets.QGridLayout(self)
-        #btn = QtWidgets.QPushButton('Show toaster')
-        #layout.addWidget(btn)
-        #textEdit = QtWidgets.QLineEdit('Ciao!')
-        #layout.addWidget(textEdit, 0, 1)
-        #btn.clicked.connect(lambda: QToaster.showMessage(
-            #self, textEdit.text(), corner=QtCore.Qt.BottomRightCorner))
-        # just some widgets for the window
-        #layout.addWidget(QtWidgets.QTableView(), 1, 0)
-        #layout.addWidget(QtWidgets.QTextBrowser(), 1, 1)
-
-
-#if __name__ == '__main__':
-    #import sys
-    #app = QtWidgets.QApplication(sys.argv)
-    #w = W()
-    #w.show()
-    #sys.exit(app.exec_())
