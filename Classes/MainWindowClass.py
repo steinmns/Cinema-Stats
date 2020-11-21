@@ -30,6 +30,16 @@ from datetime import datetime
 import math
 import calendar
 
+import sys
+from PyQt5.QtCore import QFile, QTextStream
+import breeze_resources
+
+app = QApplication(sys.argv)
+file = QFile(":/dark.qss")
+file.open(QFile.ReadOnly | QFile.Text)
+stream = QTextStream(file)
+app.setStyleSheet(stream.readAll())
+
 class Main_Win(QMainWindow):
     
     def __init__(self):
