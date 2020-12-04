@@ -23,11 +23,16 @@
    <widget class="QTabWidget" name="MainTabMenu">
     <property name="geometry">
      <rect>
-      <x>-4</x>
-      <y>39</y>
+      <x>0</x>
+      <y>60</y>
       <width>1181</width>
-      <height>751</height>
+      <height>711</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+     </font>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -47,8 +52,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -94,12 +101,14 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>Movies: Watched: </string>
+       <string>Movies Watched: </string>
       </property>
      </widget>
      <widget class="QLabel" name="AverageRatingLabel">
@@ -113,8 +122,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -132,8 +143,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -151,8 +164,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -170,8 +185,12 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>16</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+        <kerning>true</kerning>
        </font>
       </property>
       <property name="text">
@@ -211,8 +230,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -235,8 +256,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -335,14 +358,16 @@
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>141</width>
+          <width>171</width>
           <height>16</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <family>Mollen Personal Use</family>
+          <family>Montserrat</family>
           <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
         </property>
         <property name="text">
@@ -369,14 +394,16 @@
          <rect>
           <x>20</x>
           <y>10</y>
-          <width>131</width>
+          <width>151</width>
           <height>31</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <family>Mollen Personal Use</family>
+          <family>Montserrat</family>
           <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
         </property>
         <property name="text">
@@ -437,8 +464,10 @@
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -448,16 +477,18 @@
      <widget class="QLabel" name="SelectImportSourceLabel">
       <property name="geometry">
        <rect>
-        <x>440</x>
+        <x>420</x>
         <y>180</y>
-        <width>281</width>
+        <width>321</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Mollen Personal Use</family>
+        <family>Montserrat</family>
         <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -514,15 +545,16 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
-      <width>151</width>
+      <y>10</y>
+      <width>251</width>
       <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Mollen Personal Use</family>
-      <pointsize>16</pointsize>
+      <family>Rubik Black</family>
+      <pointsize>25</pointsize>
+      <italic>true</italic>
      </font>
     </property>
     <property name="text">

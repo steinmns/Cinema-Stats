@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>364</width>
-    <height>331</height>
+    <width>378</width>
+    <height>379</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
-     <width>349</width>
+     <y>50</y>
+     <width>350</width>
      <height>311</height>
     </rect>
    </property>
@@ -28,6 +28,11 @@
     </property>
     <item row="0" column="0">
      <widget class="QLabel" name="MovieTitleLabel">
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
+      </property>
       <property name="text">
        <string>Movie Title:</string>
       </property>
@@ -40,6 +45,11 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
       </property>
       <property name="text">
        <string>Date Watched:</string>
@@ -111,6 +121,11 @@
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="MovieRatingLabel">
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
+      </property>
       <property name="text">
        <string>Rating (1-10):</string>
       </property>
@@ -204,6 +219,11 @@
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="MovieGenreLabel">
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
+      </property>
       <property name="text">
        <string>Genre:</string>
       </property>
@@ -318,6 +338,11 @@
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="MovieLocationLabel">
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
+      </property>
       <property name="text">
        <string>Location Watched:</string>
       </property>
@@ -368,6 +393,11 @@
     </item>
     <item row="5" column="0">
      <widget class="QLabel" name="MovieRewatchLabel">
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
+      </property>
       <property name="text">
        <string>Rewatch?</string>
       </property>
@@ -418,6 +448,11 @@
     </item>
     <item row="6" column="0">
      <widget class="QLabel" name="MovieCommentsLabel">
+      <property name="font">
+       <font>
+        <family>Montserrat</family>
+       </font>
+      </property>
       <property name="text">
        <string>Comments:</string>
       </property>
@@ -507,6 +542,27 @@
      </layout>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="AddMovieTitleLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Rubik Black</family>
+     <pointsize>18</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Add Movie</string>
+   </property>
   </widget>
  </widget>
  <resources/>
