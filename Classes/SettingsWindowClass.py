@@ -41,7 +41,6 @@ class Settings_Win(QDialog):
         cursor.execute(sql, vals)
         dbConnection.commit()
         cursor.close()
-        print('Success!')
         QToaster.showMessage(self.parent(), 'Settings Updated', corner=QtCore.Qt.BottomRightCorner)
         self.close()
 
