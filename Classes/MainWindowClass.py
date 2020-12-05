@@ -84,12 +84,6 @@ class Main_Win(QMainWindow):
         self.HelpButton = self.findChild(QtWidgets.QPushButton, 'HelpButton')
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
-
-        #Refresh Recent Button Setup
-        refresh_icon = qta.icon('mdi.refresh')
-        self.RefreshRecentButton = self.findChild(QtWidgets.QPushButton, 'RefreshRecentButton')
-        self.RefreshRecentButton.setIcon(refresh_icon)
-        self.RefreshRecentButton.clicked.connect(self.refreshLastTen)
         
         #Settings
         appSettings = Settings_Win(self).getSettings()

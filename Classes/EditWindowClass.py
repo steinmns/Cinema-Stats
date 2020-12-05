@@ -107,6 +107,3 @@ class EditForm_Win(QDialog):
             self.rewatchVal = 'No'
 
         return True 
-
-        
-        
