@@ -1,6 +1,6 @@
 #PyQT Dependencies
 from PyQt5 import QtWidgets, QtCore, uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout, QFileDialog
 
 #External Classes
 from Classes.AddWindowClass import AddForm_Win
@@ -29,6 +29,7 @@ import time
 from datetime import datetime
 import math
 import calendar
+import pandas as pd
 
 class Main_Win(QMainWindow):
     
@@ -84,6 +85,12 @@ class Main_Win(QMainWindow):
         self.HelpButton = self.findChild(QtWidgets.QPushButton, 'HelpButton')
         self.HelpButton.setIcon(help_icon)
         self.HelpButton.clicked.connect(self.displayHelpWindow)
+
+        #File Loading Button Setup
+        self.MSImportButton = self.findChild(QtWidgets.QPushButton, 'movieSheetImportButton')
+        self.MSImportButton.clicked.connect(self.loadFromExcel)
+        self.LBImportButton = self.findChild(QtWidgets.QPushButton, 'letterboxdImportButton')
+        self.LBImportButton.clicked.connect(self.loadFromLetterBoxd)
         
         #Settings
         appSettings = Settings_Win(self).getSettings()
@@ -411,3 +418,19 @@ class Main_Win(QMainWindow):
         self.dynAxMPM.set_yticks(yRange)
         self.dynAxMPM.set_xticklabels(months, rotation='vertical')  #Makes tick labels vertical to save space
         self.dynAxMPM.figure.canvas.draw()                          #Refreshes Canvas
+
+    def loadFromExcel(self):
+        options = QFileDialog.Options()
+        fileName, _ = QFileDialog.getOpenFileName(self,"Select a Spreadsheet", "","All Files (*)", options=options)
+        if (fileName and fileName.lower().endswith(('.xlsx','.xlsm'))):
+            print(fileName)
+            df = pd.read_excel(io=fileName)
+            print(df.head(5))
+        else:
+            QToaster.showMessage(self, 'Invalid File Type', corner=QtCore.Qt.BottomRightCorner)
+
+    def loadFromLetterBoxd(self):
+        options = QFileDialog.Options()
+        fileName, _ = QFileDialog.getOpenFileName(self,"Select a LetterBoxd File", "","All Files (*)", options=options)
+        if fileName:
+            print(fileName)
